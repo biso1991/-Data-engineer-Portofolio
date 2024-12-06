@@ -1,0 +1,132 @@
+/* stylelint-disable no-descending-specificity */
+/* stylelint-disable selector-pseudo-element-colon-notation */
+/* stylelint-disable selector-id-pattern */
+/* stylelint-disable value-no-vendor-prefix */
+/* stylelint-disable property-no-vendor-prefix */
+/* stylelint-disable shorthand-property-no-redundant-values */
+/* stylelint-disable alpha-value-notation */
+/* stylelint-disable color-function-notation */
+/* stylelint-disable font-family-name-quotes */
+/* stylelint-disable font-family-no-missing-generic-family-keyword */
+/* stylelint-disable length-zero-no-unit */
+/* stylelint-disable selector-class-pattern */
+
+.alert.alert-danger {
+  background-color: inherit;
+  border: inherit;
+  color: red;
+  font-size: 13px;
+  padding: inherit;
+  margin: inherit;
+}
+
+ul.datalist_list {
+  list-style: none;
+  padding: 8px 0px;
+  background-color: #e3e3e3;
+  margin: 0px 1px;
+  position: absolute;
+  border-radius: 0px 0px 8px 8px;
+  max-width: 93.5%;
+  width: 93.5%;
+  z-index: 9;
+  max-height: 141px;
+  overflow-y: auto;
+}
+
+.hide {
+  display: none;
+}
+
+a#url_model {
+  font-size: 16px;
+  text-decoration: none;
+  margin-left: -6px;
+}
+
+.datalist_wrapper:hover > a#url_model:before {
+  visibility: visible;
+}
+
+a#url_model:before {
+  visibility: hidden;
+  display: inline-block;
+  font-family: 'fontAwesome';
+  content: '\f14c';
+  -webkit-font-smoothing: antialiased;
+  font-style: normal;
+  font-feature-settings: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-rendering: auto;
+  color: #838383bd;
+  margin-right: 5px;
+}
+
+ul.datalist_list::-webkit-scrollbar {
+  width: 12px;
+}
+
+ul.datalist_list::-webkit-scrollbar-track {
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  background-color: #d5d5d5;
+}
+
+ul.datalist_list::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  background-color: #adadad;
+}
+
+ul.datalist_list::-webkit-scrollbar-thumb:window-inactive {
+  background: #c1c1c1;
+}
+
+input.input_true {
+  height: 26px;
+  padding-left: 2px;
+}
+
+.inputEdit {
+  background: none;
+  outline: none;
+  border: 0;
+  width: -webkit-fill-available;
+  width: fill-available;
+  pointer-events: none;
+  height: 26px;
+  overflow-y: hidden;
+  resize: none;
+}
+
+[data-title]:hover::before {
+  content: attr(data-title);
+  position: absolute;
+  display: inline-block;
+  padding: 3px 6px;
+  border-radius: 4px;
+  background: white;
+  color: black;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: Montserrat, sans-serif;
+  right: 2%;
+  z-index: 99999;
+}
+
+li.item_datalist_list {
+  margin: 2px;
+  padding: 3px;
+  border-radius: 6px;
+}
+
+li.item_datalist_list:hover {
+  background: #cbcbcba6;
+  cursor: pointer;
+}
+
+li.item_datalist_list.selected {
+  background: #cbcbcba6;
+  cursor: pointer;
+}

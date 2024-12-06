@@ -1,0 +1,41 @@
+! kafka-topics --zookeeper localhost:2181 --create --topic creditcardfraud_source --partitions 3 --replication-factor 1from ksql import KSQLAPI
+client = KSQLAPI('http://localhost:8088')
+! confluent start ksql-server
+
+
+client.create_stream(table_name='creditcardfraud_source',
+                     columns_type=['Id bigint', 'Timestamp varchar', 'User varchar', 'Time int', 'V1 double', 'V2 double', 'V3 double', 'V4 double', 'V5 double', 'V6 double', 'V7 double', 'V8 double', 'V9 double', 'V10 double', 'V11 double', 'V12 double', 'V13 double', 'V14 double', 'V15 double', 'V16 double', 'V17 double', 'V18 double', 'V19 double', 'V20 double', 'V21 double', 'V22 double', 'V23 double', 'V24 double', 'V25 double', 'V26 double', 'V27 double', 'V28 double', 'Amount double', 'Class string'],
+                     topic='creditcardfraud_source',
+                     value_format='DELIMITED')
+
+
+
+Preprocessing: 
+
+- Filter columns which are not needed 
+- Filter messages where column 'class' is empty
+- Change data format to Avro for more convenient further processing:
+
+    client.create_stream_as(table_name='creditcardfraud_preprocessed_avro',
+                     select_columns=['Time', 'V1', 'V2', 'V3', 'V4', 'V5', 'V6', 'V7', 'V8', 'V9', 'V10', 'V11', 'V12', 'V13', 'V14', 'V15', 'V16', 'V17', 'V18', 'V19', 'V20', 'V21', 'V22', 'V23', 'V24', 'V25', 'V26', 'V27', 'V28', 'Amount', 'Class'],
+                     src_table='creditcardfraud_source',
+                     conditions='Class IS NOT NULL',
+                     kafka_topic='creditcardfraud_preprocessed_avro',
+                     value_format='AVRO')
+    client.ksql('show streams')
+    client.ksql('describe CREDITCARDFRAUD_PREPROCESSED_AVRO')
+    
+    query = client.query('SELECT * FROM CREDITCARDFRAUD_PREPROCESSED_AVRO LIMIT 1')
+    for item in query: 
+        print(item)
+
+
+
+spark_log : 
+24/07/08 18:27:32 WARN Client: Neither spark.yarn.jars nor spark.yarn.archive is set, falling back to uploading libraries under SPARK_HOME.
+
+
+
+spark-history  | Spark Command: /usr/lib/jvm/java-11-openjdk-amd64/bin/java -cp /opt/spark/conf/:/opt/spark/jars/*:/opt/hadoop/etc/hadoop/ -Xmx1g org.apache.spark.deploy.history.HistoryServer
+
+

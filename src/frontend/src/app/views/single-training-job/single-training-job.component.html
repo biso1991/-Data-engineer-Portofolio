@@ -1,0 +1,371 @@
+<div class="title_view_list">
+  <h2 *ngIf="TrainingJob.name">Training Job: {{ TrainingJob.name }}</h2>
+</div>
+<hr class="component_divider" />
+<div class="container body_wrapper">
+  <div style="width: 49%">
+    <div
+      [class]="
+        editFromlist ? 'listing_item_info blob white' : 'listing_item_info'
+      "
+    >
+      <span class="actions_container_listing">
+        <b class="title"
+          >About
+          <div
+            data-title="About Training Job allows you to visualize the informations of the Training Job and modify them."
+          >
+            <svg
+              disabled=""
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              cursor="help"
+              style="color: #a9abb6"
+            >
+              <path
+                d="M7.82 6a1 1 0 0 1 .99 1.16L8 12h2a1 1 0 1 1 0 2H7.18a1 1 0 0 1-.99-1.16L7 8H6a1 1 0 0 1 0-2h1.82ZM8.5 5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
+                shape-rendering="geometricPrecision"
+              ></path>
+            </svg></div
+        ></b>
+        <div class="info_actions_wrapper">
+          <button
+            title="Apply Changes"
+            (click)="updateTrainingJob()"
+            [disabled]="!formisvalid"
+            *ngIf="editing"
+          >
+            <i class="fa fa-check" aria-hidden="true"></i>
+          </button>
+          <button
+            [title]="editing ? 'Cancel' : 'Edit Training Job'"
+            (click)="editEvent()"
+          >
+            <i
+              aria-hidden="true"
+              [class]="editing ? 'fa fa-times' : 'fa fa-pencil'"
+            ></i>
+          </button>
+        </div>
+      </span>
+      <hr />
+      <form #f="ngForm">
+        <span [class]="editing ? 'spanEditing' : ''"
+          ><b [class]="editing ? 'editStyle' : ''">Name: </b>
+          <div class="input_wrapper_fl">
+            <input
+              (keydown.space)="
+                !TrainingJobUpdated.name ? $event.preventDefault() : ''
+              "
+              class="form-control"
+              [class]="editing ? 'input_true' : 'inputEdit'"
+              (ngModelChange)="verify(f)"
+              name="name"
+              id="name"
+              [(ngModel)]="TrainingJobUpdated.name"
+              #name="ngModel"
+              type="text"
+              minlength="3"
+              maxlength="50"
+              placeholder="Enter Training Job Name"
+              required
+            />
+            <div
+              *ngIf="name.invalid && name.touched"
+              class="alert alert-danger"
+            >
+              <div *ngIf="name.errors?.['minlength']">
+                <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Name minimum
+                3 characters
+              </div>
+              <div *ngIf="name.errors?.['required']">
+                <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Name is
+                required
+              </div>
+            </div>
+          </div>
+        </span>
+        <span
+          ><b>Project: </b>
+          <div class="input_wrapper_fl">
+            <input
+              class="form-control inputEdit"
+              type="text"
+              [value]="TrainingJobUpdated.Project_name"
+            />
+          </div>
+        </span>
+        <span
+          ><b>Status: </b>
+          <div
+            class="input_wrapper_fl"
+            style="
+              padding-left: 2%;
+              display: flex;
+              flex-direction: row;
+              justify-content: flex-start;
+              align-items: center;
+              flex-wrap: nowrap;
+            "
+          >
+            <div
+              *ngIf="TrainingJobUpdated.status === status.status.idle"
+              [title]="status.status[TrainingJobUpdated.status].toUpperCase()"
+              class="training_job_status idle"
+            ></div>
+
+            <div
+              *ngIf="TrainingJobUpdated.status === status.status.running"
+              [title]="status.status[TrainingJobUpdated.status].toUpperCase()"
+              class="training_job_status running animated"
+            ></div>
+
+            <div
+              *ngIf="TrainingJobUpdated.status === status.status.finished"
+              [title]="status.status[TrainingJobUpdated.status].toUpperCase()"
+              class="training_job_status finished"
+            ></div>
+
+            <div
+              *ngIf="TrainingJobUpdated.status === status.status.aborted"
+              [title]="status.status[TrainingJobUpdated.status].toUpperCase()"
+              class="training_job_status aborted"
+            ></div>
+
+            <div
+              *ngIf="TrainingJobUpdated.status === status.status.failed"
+              [title]="status.status[TrainingJobUpdated.status].toUpperCase()"
+              class="training_job_status failed"
+            ></div>
+            <p style="margin: 0px; padding: 0px 5px; color: black">
+              {{ status.status[TrainingJobUpdated.status] | titlecase }}
+            </p>
+          </div>
+        </span>
+
+        <span [class]="editing ? 'spanEditing' : ''"
+          ><b style="width: 18%" [class]="editing ? 'editStyle' : ''"
+            >GPU Batch Size:
+          </b>
+          <div class="input_wrapper_fl">
+            <input
+              style="padding: 0.375rem 0.7rem"
+              (keydown.space)="
+                !TrainingJobUpdated.per_gpu_batch_size
+                  ? $event.preventDefault()
+                  : ''
+              "
+              type="number"
+              class="form-control"
+              [class]="editing ? 'input_true' : 'inputEdit'"
+              (ngModelChange)="verify(f)"
+              name="per_gpu_batch_size"
+              id="per_gpu_batch_size"
+              [(ngModel)]="TrainingJobUpdated.per_gpu_batch_size"
+              #per_gpu_batch_size="ngModel"
+              min="2"
+              value="TrainingJobUpdated.per_gpu_batch_size"
+              placeholder="Enter GPU Batch Size (Default: 4)"
+              required
+            />
+            <div
+              *ngIf="per_gpu_batch_size.invalid && per_gpu_batch_size.touched"
+              class="alert alert-danger"
+            >
+              <div *ngIf="per_gpu_batch_size.errors?.['min']">
+                <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> GPU Batch
+                Size minimum 2
+              </div>
+              <div *ngIf="per_gpu_batch_size.errors?.['required']">
+                <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> GPU Batch
+                Size is required
+              </div>
+            </div>
+          </div>
+        </span>
+
+        <span [class]="editing ? 'spanEditing' : ''"
+          ><b style="width: 18%" [class]="editing ? 'editStyle' : ''"
+            >Learning Rate:
+          </b>
+          <div class="input_wrapper_fl">
+            <input
+              style="padding: 0.375rem 0.7rem"
+              (keydown.space)="
+                !TrainingJobUpdated.learning_rate ? $event.preventDefault() : ''
+              "
+              type="number"
+              class="form-control"
+              [class]="editing ? 'input_true' : 'inputEdit'"
+              (ngModelChange)="verify(f)"
+              name="learning_rate"
+              id="learning_rate"
+              [(ngModel)]="TrainingJobUpdated.learning_rate"
+              #learning_rate="ngModel"
+              min="0.1"
+              value="TrainingJobUpdated.learning_rate"
+              placeholder="Enter Learning Rate (Default: 0.1)"
+              required
+            />
+            <div
+              *ngIf="learning_rate.invalid && learning_rate.touched"
+              class="alert alert-danger"
+            >
+              <div *ngIf="learning_rate.errors?.['min']">
+                <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Learning
+                Rate minimum 0.1
+              </div>
+              <div *ngIf="learning_rate.errors?.['required']">
+                <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Learning
+                Rate is required
+              </div>
+            </div>
+          </div>
+        </span>
+        <span [class]="editing ? 'spanEditing' : ''"
+          ><b style="width: 18%" [class]="editing ? 'editStyle' : ''"
+            >Warmup Steps:
+          </b>
+          <div class="input_wrapper_fl">
+            <input
+              style="padding: 0.375rem 0.7rem"
+              (keydown.space)="
+                !TrainingJobUpdated.warmup_steps ? $event.preventDefault() : ''
+              "
+              type="number"
+              class="form-control"
+              [class]="editing ? 'input_true' : 'inputEdit'"
+              (ngModelChange)="verify(f)"
+              name="warmup_steps"
+              id="warmup_steps"
+              [(ngModel)]="TrainingJobUpdated.warmup_steps"
+              #warmup_steps="ngModel"
+              min="1"
+              value="TrainingJobUpdated.warmup_steps"
+              placeholder="Enter Warmup Steps (Default: 1)"
+              required
+            />
+            <div
+              *ngIf="warmup_steps.invalid && warmup_steps.touched"
+              class="alert alert-danger"
+            >
+              <div *ngIf="warmup_steps.errors?.['min']">
+                <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Warmup Steps
+                minimum 1
+              </div>
+              <div *ngIf="warmup_steps.errors?.['required']">
+                <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Warmup Steps
+                is required
+              </div>
+            </div>
+          </div>
+        </span>
+        <span [class]="editing ? 'spanEditing' : ''"
+          ><b style="width: 18%" [class]="editing ? 'editStyle' : ''"
+            >Num epochs:
+          </b>
+          <div class="input_wrapper_fl">
+            <input
+              style="padding: 0.375rem 0.7rem"
+              (keydown.space)="
+                !TrainingJobUpdated.num_epochs ? $event.preventDefault() : ''
+              "
+              type="number"
+              class="form-control"
+              [class]="editing ? 'input_true' : 'inputEdit'"
+              (ngModelChange)="verify(f)"
+              name="num_epochs"
+              id="num_epochs"
+              [(ngModel)]="TrainingJobUpdated.num_epochs"
+              #num_epochs="ngModel"
+              min="5"
+              value="TrainingJobUpdated.num_epochs"
+              placeholder="Enter Num epochs (Default: 5)"
+              required
+            />
+            <div
+              *ngIf="num_epochs.invalid && num_epochs.touched"
+              class="alert alert-danger"
+            >
+              <div *ngIf="num_epochs.errors?.['min']">
+                <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Num epochs
+                minimum 5
+              </div>
+              <div *ngIf="num_epochs.errors?.['required']">
+                <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Num epochs
+                is required
+              </div>
+            </div>
+          </div>
+        </span>
+      </form>
+    </div>
+    <div class="listing_item_info dates">
+      <small
+        >Created: {{ TrainingJob.create_date }} | Updated:
+        {{ TrainingJob.update_date }}</small
+      >
+    </div>
+  </div>
+  <!-- LISTING Monitoring -->
+  <div style="width: 49%">
+    <div
+      class="listing_item_info v2"
+      (resized)="changeSize($event)"
+      [style]="MonitoringExpand ? 'height : 100%;' : ''"
+    >
+      <span class="actions_container_listing v2">
+        <b class="title"
+          >Monitoring ({{ trainingJobMonitoring.length }})
+          <div
+            data-title2="Monitoring allows you to visualize the latest 10 training Job Running Monitoring."
+          >
+            <svg
+              disabled=""
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              cursor="help"
+              style="color: #a9abb6"
+            >
+              <path
+                d="M7.82 6a1 1 0 0 1 .99 1.16L8 12h2a1 1 0 1 1 0 2H7.18a1 1 0 0 1-.99-1.16L7 8H6a1 1 0 0 1 0-2h1.82ZM8.5 5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
+                shape-rendering="geometricPrecision"
+              ></path>
+            </svg></div
+        ></b>
+        <div
+          style="
+            display: flex;
+            flex-direction: row;
+            align-content: center;
+            align-items: center;
+            width: 17%;
+            justify-content: flex-end;
+          "
+        >
+          <span (click)="expandToogle()" id="expand"
+            ><i
+              style="color: black"
+              [class]="MonitoringExpand ? 'fa fa-compress' : 'fa fa-expand'"
+              aria-hidden="true"
+            ></i
+          ></span>
+        </div>
+      </span>
+      <hr />
+
+      <app-list-items
+        [paginationV]="false"
+        [topBar]="false"
+        [actions]="false"
+        [entityName]="'Monitoring'"
+        [listItem]="trainingJobMonitoring"
+        [structurelist]="structure"
+        [countP]="trainingJobMonitoring.length"
+      >
+      </app-list-items>
+    </div>
+  </div>
+</div>

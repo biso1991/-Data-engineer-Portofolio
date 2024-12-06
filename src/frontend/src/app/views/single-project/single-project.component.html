@@ -1,0 +1,626 @@
+<div class="title_view_list">
+  <h2 *ngIf="project && project.name">
+    Project: {{ project ? project.name : '' }}
+  </h2>
+  <button
+    (click)="downloadModel()"
+    *ngIf="project && project.trained_model_ref_url"
+    class="download_model"
+  >
+    Download Trained Model
+  </button>
+</div>
+<hr class="component_divider" />
+<div class="container body_wrapper">
+  <div style="width: 49%">
+    <div
+      [class]="
+        editFromlist ? 'listing_item_info blob white' : 'listing_item_info'
+      "
+    >
+      <span class="actions_container_listing">
+        <b class="title"
+          >About
+          <div
+            data-title="About Project allows you to visualize the informations of the project and modify them."
+          >
+            <svg
+              disabled=""
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              cursor="help"
+              style="color: #a9abb6"
+            >
+              <path
+                d="M7.82 6a1 1 0 0 1 .99 1.16L8 12h2a1 1 0 1 1 0 2H7.18a1 1 0 0 1-.99-1.16L7 8H6a1 1 0 0 1 0-2h1.82ZM8.5 5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
+                shape-rendering="geometricPrecision"
+              ></path>
+            </svg></div
+        ></b>
+        <div class="info_actions_wrapper">
+          <button
+            title="Apply Changes"
+            (click)="updateProject()"
+            [disabled]="!formisvalid"
+            *ngIf="editing"
+          >
+            <i class="fa fa-check" aria-hidden="true"></i>
+          </button>
+          <button
+            [title]="editing ? 'Cancel' : 'Edit Project'"
+            (click)="editEvent()"
+          >
+            <i
+              aria-hidden="true"
+              [class]="editing ? 'fa fa-times' : 'fa fa-pencil'"
+            ></i>
+          </button>
+        </div>
+      </span>
+      <hr />
+      <form #f="ngForm">
+        <span [class]="editing ? 'spanEditing' : ''"
+          ><b [class]="editing ? 'editStyle' : ''">Name: </b>
+          <div class="input_wrapper_fl">
+            <input
+              (keydown.space)="
+                !projectUpdated.name ? $event.preventDefault() : ''
+              "
+              class="form-control"
+              [class]="editing ? 'input_true' : 'inputEdit'"
+              (ngModelChange)="verify(f)"
+              name="name"
+              id="name"
+              [(ngModel)]="projectUpdated.name"
+              #name="ngModel"
+              type="text"
+              minlength="3"
+              maxlength="50"
+              placeholder="Enter Project Name"
+              required
+            />
+            <div
+              *ngIf="name.invalid && name.touched"
+              class="alert alert-danger"
+            >
+              <div *ngIf="name.errors?.['minlength']">
+                <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Name minimum
+                3 characters
+              </div>
+              <div *ngIf="name.errors?.['required']">
+                <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Name is
+                required
+              </div>
+            </div>
+          </div>
+        </span>
+        <span [class]="editing ? 'spanEditing' : ''">
+          <b [class]="editing ? 'editStyle' : ''">Description: </b>
+          <div class="input_wrapper_fl">
+            <textarea
+              (keydown.space)="
+                !projectUpdated.description ? $event.preventDefault() : ''
+              "
+              class="form-control"
+              [class]="editing ? 'input_true' : 'inputEdit'"
+              (ngModelChange)="verify(f)"
+              placeholder="Enter Project Description"
+              name="description"
+              id="description"
+              [(ngModel)]="projectUpdated.description"
+              #description="ngModel"
+              maxlength="300"
+              required
+            ></textarea>
+            <div
+              *ngIf="description.invalid && description.touched"
+              class="alert alert-danger"
+            >
+              <div *ngIf="description.errors?.['maxlength']">
+                <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Description
+                maximum 300 characters
+              </div>
+              <div *ngIf="description.errors?.['required']">
+                <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Description
+                is required
+              </div>
+            </div>
+          </div>
+        </span>
+
+        <span><b>Store: </b>{{ project.store_name }}</span>
+        <span
+          ><b>Answers: </b
+          ><b style="width: 100%; padding-left: 2%"
+            >Accepted :{{
+              project.nb_Answers ? project.nb_Answers.chosen : 0
+            }}
+            / Rejected:
+            {{ project.nb_Answers ? project.nb_Answers.rejected : 0 }}</b
+          ></span
+        >
+        <span [class]="editing ? 'spanEditing' : ''"
+          ><b [class]="editing ? 'editStyle' : ''">Retreiver: </b>
+          <div class="input_wrapper_fl">
+            <input
+              (keydown.space)="
+                !projectUpdated.retreiver_count ? $event.preventDefault() : ''
+              "
+              type="number"
+              class="form-control"
+              [class]="editing ? 'input_true' : 'inputEdit'"
+              (ngModelChange)="verify(f)"
+              name="retreiver_count"
+              id="retreiver_count"
+              [(ngModel)]="projectUpdated.retreiver_count"
+              #retreiver_count="ngModel"
+              min="5"
+              value="project.retreiver_count"
+              required
+            />
+            <div
+              *ngIf="retreiver_count.invalid && retreiver_count.touched"
+              class="alert alert-danger"
+            >
+              <div *ngIf="retreiver_count.errors?.['min']">
+                <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Retreiver
+                minimum 5
+              </div>
+              <div *ngIf="retreiver_count.errors?.['required']">
+                <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Retreiver is
+                required
+              </div>
+            </div>
+          </div>
+        </span>
+        <span [class]="editing ? 'spanEditing' : ''"
+          ><b [class]="editing ? 'editStyle' : ''">Reader: </b>
+          <div class="input_wrapper_fl">
+            <input
+              (keydown.space)="
+                !projectUpdated.reader_count ? $event.preventDefault() : ''
+              "
+              type="number"
+              class="form-control"
+              [class]="editing ? 'input_true' : 'inputEdit'"
+              (ngModelChange)="verify(f)"
+              name="reader_count"
+              id="reader_count"
+              [(ngModel)]="projectUpdated.reader_count"
+              #reader_count="ngModel"
+              min="5"
+              value="project.reader_count"
+              required
+            />
+            <div
+              *ngIf="reader_count.invalid && reader_count.touched"
+              class="alert alert-danger"
+            >
+              <div *ngIf="reader_count.errors?.['min']">
+                <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Reader
+                minimum 5
+              </div>
+              <div *ngIf="reader_count.errors?.['required']">
+                <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Reader is
+                required
+              </div>
+            </div>
+          </div>
+        </span>
+        <span [class]="editing ? 'spanEditing' : ''">
+          <b [class]="editing ? 'editStyle' : ''">Preprocessing: </b>
+          <div class="input_wrapper_fl">
+            <select
+              style="padding: 0px 11px"
+              class="form-control"
+              [class]="editing ? 'input_true' : 'inputEdit'"
+              #select
+              id="preprocessing_options"
+              (change)="changeSelect($any($event.target).value, f, select)"
+              class="form-control customselect"
+              required
+            >
+              <option
+                value=""
+                [selected]="!projectUpdated.preprocessing_options"
+              >
+                Select Preprocessing Options
+              </option>
+              <option
+                [selected]="
+                  projectUpdated.preprocessing_options &&
+                  projectUpdated.preprocessing_options === option
+                "
+                *ngFor="let option of preprocessingOptions; let i = index"
+                [value]="i"
+              >
+                {{ option | titlecase }}
+              </option>
+            </select>
+          </div>
+        </span>
+
+        <span
+          *ngIf="
+            projectUpdated.preprocessing_options !== null &&
+            getIndex(projectUpdated.preprocessing_options) === 0
+          "
+          [class]="editing ? 'spanEditing' : ''"
+          ><b style="width: 18%" [class]="editing ? 'editStyle' : ''"
+            >Split Overlap:
+          </b>
+          <div class="input_wrapper_fl">
+            <input
+              style="padding: 0.375rem 0.7rem"
+              (keydown.space)="
+                !projectUpdated.split_overlap ? $event.preventDefault() : ''
+              "
+              type="number"
+              class="form-control"
+              [class]="editing ? 'input_true' : 'inputEdit'"
+              (ngModelChange)="verify(f)"
+              name="split_overlap"
+              id="split_overlap"
+              [(ngModel)]="projectUpdated.split_overlap"
+              #split_overlap="ngModel"
+              min="1"
+              value="projectUpdated.split_overlap"
+              placeholder="Enter Split Overlap (Default: 5)"
+              required
+            />
+            <div
+              *ngIf="split_overlap.invalid && split_overlap.touched"
+              class="alert alert-danger"
+            >
+              <div *ngIf="split_overlap.errors?.['min']">
+                <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Split
+                Overlap minimum 1
+              </div>
+              <div *ngIf="split_overlap.errors?.['required']">
+                <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Split
+                Overlap is required
+              </div>
+            </div>
+          </div>
+        </span>
+        <span
+          *ngIf="
+            projectUpdated.preprocessing_options !== null &&
+            getIndex(projectUpdated.preprocessing_options) === 0
+          "
+          [class]="editing ? 'spanEditing' : ''"
+          ><b style="width: 18%" [class]="editing ? 'editStyle' : ''"
+            >Split Length:
+          </b>
+          <div class="input_wrapper_fl">
+            <input
+              style="padding: 0.375rem 0.7rem"
+              (keydown.space)="
+                !projectUpdated.split_length ? $event.preventDefault() : ''
+              "
+              type="number"
+              class="form-control"
+              [class]="editing ? 'input_true' : 'inputEdit'"
+              (ngModelChange)="verify(f)"
+              name="split_length"
+              id="split_length"
+              [(ngModel)]="projectUpdated.split_length"
+              #split_length="ngModel"
+              min="1"
+              value="projectUpdated.split_length"
+              placeholder="Enter Split Length (Default: 10)"
+              required
+            />
+            <div
+              *ngIf="split_length.invalid && split_length.touched"
+              class="alert alert-danger"
+            >
+              <div *ngIf="split_length.errors?.['min']">
+                <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Split Length
+                minimum 1
+              </div>
+              <div *ngIf="split_length.errors?.['required']">
+                <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Split Length
+                is required
+              </div>
+            </div>
+          </div>
+        </span>
+
+        <span [class]="editing ? 'spanEditing' : ''">
+          <b [class]="editing ? 'editStyle' : ''">Split By: </b>
+          <div class="input_wrapper_fl">
+            <select
+              style="padding: 0px 11px"
+              class="form-control"
+              [class]="editing ? 'input_true' : 'inputEdit'"
+              #select1
+              id="split_by"
+              (change)="changeSelect($any($event.target).value, f, select1)"
+              class="form-control customselect"
+              required
+            >
+              <option value="" [selected]="!projectUpdated.split_by">
+                Select Split By
+              </option>
+              <option
+                [selected]="
+                  projectUpdated.split_by && projectUpdated.split_by === option
+                "
+                *ngFor="let option of splitBy; let i = index"
+                [value]="i"
+              >
+                {{ option | titlecase }}
+              </option>
+            </select>
+          </div>
+        </span>
+        <span
+          *ngIf="
+            projectUpdated.split_by && projectUpdated.split_by === splitBy[0]
+          "
+          [class]="editing ? 'spanEditing' : ''"
+        >
+          <b [class]="editing ? 'editStyle' : ''">Sentence Boundary: </b>
+          <div
+            class="input_wrapper_fl"
+            [style]="!editing ? 'padding-left: 2%;' : ''"
+          >
+            <bSwitch
+              [disabled]="
+                !projectUpdated.split_by ||
+                projectUpdated.split_by !== splitBy[0]
+              "
+              name="split_respect_sentence_boundary"
+              [switch-size]="'mini'"
+              [(ngModel)]="projectUpdated.split_respect_sentence_boundary"
+              [disabled]="!editing"
+            >
+            </bSwitch>
+          </div>
+        </span>
+        <span [class]="editing ? 'spanEditing' : ''"
+          ><b [class]="editing ? 'editStyle' : ''">Model: </b>
+          <div class="input_wrapper_fl">
+            <app-datalist
+              [optionsList]="{ list: listModels, search: searchedModel }"
+              [Isediting]="editing"
+              [selectedItem]="selectedModel"
+              [name]="'model_name'"
+              (Select)="onChangedatalist($event)"
+              (errorE)="verify(f, $event)"
+              (scrollBottom)="displayMore($event)"
+              (search)="searchModel($event)"
+              [entity]="'Model'"
+              [link]="null"
+            >
+            </app-datalist>
+          </div>
+        </span>
+      </form>
+    </div>
+    <div class="listing_item_info dates">
+      <small
+        >Created: {{ project.create_date }} | Updated:
+        {{ project.update_date }}</small
+      >
+    </div>
+  </div>
+
+  <!-- LISTING TRAINING JOB -->
+  <div style="width: 49%">
+    <div
+      class="listing_item_info v2"
+      (resized)="changeSize($event)"
+      [style]="trainingJobExpand ? 'height : 100%;' : ''"
+    >
+      <span class="actions_container_listing v2">
+        <b class="title"
+          >Training Job ({{ listTrainingJobs.length }})
+          <div
+            data-title2="Training Job allows you to visualize the latest 10 training Job of the project."
+          >
+            <svg
+              disabled=""
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              cursor="help"
+              style="color: #a9abb6"
+            >
+              <path
+                d="M7.82 6a1 1 0 0 1 .99 1.16L8 12h2a1 1 0 1 1 0 2H7.18a1 1 0 0 1-.99-1.16L7 8H6a1 1 0 0 1 0-2h1.82ZM8.5 5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
+                shape-rendering="geometricPrecision"
+              ></path>
+            </svg></div
+        ></b>
+        <div
+          style="
+            display: flex;
+            flex-direction: row;
+            align-content: center;
+            align-items: center;
+            width: 17%;
+            justify-content: space-between;
+          "
+        >
+          <span (click)="expandToogle()" id="expand"
+            ><i
+              style="color: black"
+              [class]="trainingJobExpand ? 'fa fa-compress' : 'fa fa-expand'"
+              aria-hidden="true"
+            ></i
+          ></span>
+          <span
+            ><a
+              [routerLink]="['/dashboard/training-job/', project.id]"
+              [title]="
+                'View All Training Job of <' + project.name + '> Project'
+              "
+              >View All</a
+            ></span
+          >
+        </div>
+      </span>
+      <hr />
+
+      <app-list-items
+        [paginationV]="false"
+        [topBar]="false"
+        [actions]="false"
+        [entityName]="'Training Job'"
+        [listItem]="listTrainingJobs"
+        [structurelist]="structure"
+        [countP]="listTrainingJobs.length"
+      >
+      </app-list-items>
+    </div>
+  </div>
+</div>
+
+<div class="container body_wrapper">
+  <!-- LISTING FILES -->
+  <div style="width: 100%; margin-top: 2%">
+    <div class="listing_item_info v2 v3">
+      <span class="actions_container_listing v2 v3">
+        <b class="title" style="width: 10%"
+          >Files ({{ FilesList.length }})
+          <div
+            data-title2="Files allows you to visualize the latest 10 Files of the project."
+          >
+            <svg
+              disabled=""
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              cursor="help"
+              style="color: #a9abb6"
+            >
+              <path
+                d="M7.82 6a1 1 0 0 1 .99 1.16L8 12h2a1 1 0 1 1 0 2H7.18a1 1 0 0 1-.99-1.16L7 8H6a1 1 0 0 1 0-2h1.82ZM8.5 5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
+                shape-rendering="geometricPrecision"
+              ></path>
+            </svg></div
+        ></b>
+        <div
+          style="
+            display: flex;
+            flex-direction: row;
+            align-content: center;
+            align-items: center;
+            width: 17%;
+            justify-content: flex-end;
+          "
+        >
+          <span
+            ><a
+              [routerLink]="['/dashboard/file/', project.id]"
+              [title]="'View All Files of <' + project.name + '> Project'"
+              >View All ({{ project.nb_files }})</a
+            ></span
+          >
+        </div>
+      </span>
+      <hr />
+
+      <div class="files" [style]="FilesList.length === 0 ? 'height:100%' : ''">
+        <div
+          *ngIf="FilesList.length === 0"
+          style="
+            display: flex;
+            flex-direction: row;
+            width: 97%;
+            padding: 4px;
+            border-radius: 10px;
+            background: #e6e7ee;
+            margin: auto;
+            justify-content: center;
+          "
+        >
+          <b style="color: inherit; font-weight: inherit">No File Found !</b>
+        </div>
+        <div
+          [title]="file.file_name"
+          *ngFor="let file of FilesList"
+          class="file"
+          [routerLink]="['/dashboard/file/single/', file.id]"
+        >
+          <div
+            [style]="
+              'background-image: url(' +
+              getBackgroundImage(file.file_name) +
+              '); background-size: contain;
+                    background-repeat: no-repeat;height: 26%;width: 30%;margin: auto;'
+            "
+          ></div>
+          <small>{{ file.file_name }}</small>
+        </div>
+      </div>
+      <!-- WORD CLOUD -->
+    </div>
+  </div>
+</div>
+<div class="container body_wrapper" style="margin-top: 1.8%; margin-bottom: 4%">
+  <!-- Listing Answers -->
+  <div style="width: 100%">
+    <div
+      class="listing_item_info v2"
+      style="height: 50vh !important"
+      (resized)="changeSize($event)"
+      [style]="trainingJobExpand ? 'height : 100%;' : ''"
+    >
+      <span class="actions_container_listing v2">
+        <b class="title" style="width: 13.5%"
+          >Answers ({{ listAnswers ? listAnswers.length : '0' }})
+          <div
+            data-title2="Answers allows you to visualize the latest 10 Voted Answers of this Project."
+          >
+            <svg
+              disabled=""
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              cursor="help"
+              style="color: #a9abb6"
+            >
+              <path
+                d="M7.82 6a1 1 0 0 1 .99 1.16L8 12h2a1 1 0 1 1 0 2H7.18a1 1 0 0 1-.99-1.16L7 8H6a1 1 0 0 1 0-2h1.82ZM8.5 5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
+                shape-rendering="geometricPrecision"
+              ></path>
+            </svg></div
+        ></b>
+        <div
+          style="
+            display: flex;
+            flex-direction: row;
+            align-content: center;
+            align-items: center;
+            width: 17%;
+            justify-content: flex-end;
+          "
+        >
+          <span
+            ><a
+              [routerLink]="['/dashboard/question-answering/', project.id]"
+              [title]="'View All Answers of <' + project.name + '> Project'"
+              >View All ({{ countA }})</a
+            ></span
+          >
+        </div>
+      </span>
+      <hr />
+
+      <app-list-items
+        [paginationV]="false"
+        [topBar]="false"
+        [actions]="false"
+        [entityName]="'Answer'"
+        [listItem]="listAnswers"
+        [structurelist]="structureAnswers"
+        [countP]="listAnswers ? listAnswers.length : 0"
+      >
+      </app-list-items>
+    </div>
+  </div>
+</div>

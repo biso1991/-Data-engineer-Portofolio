@@ -1,0 +1,25 @@
+ docker run --rm -it --network local_networks   confluentinc/cp-kafka /bin/kafka-console-consumer   --bootstrap-server kafka:9092 --topic test_1
+kafka-consumer-groups.sh --describe --group mygroup --bootstrap-server localhost:9092
+kafka-consumer-groups.sh --describe --group first --bootstrap-server kafka:9092
+
+ python kafka_producer.py 
+  python kafka_consumer.py 
+
+docker exec -ti kafka /bin/bash
+python  kafka_consumer.py
+python  kafka_producer.py
+
+nc -vv -l -p 9092
+nc -vz kafka 9092
+
+spark-submit --jars /opt/spark/jars/spark-sql-kafka-0-10_2.12-3.5.1.jar,/opt/spark/jars/postgresql-42.7.3.jar --files host_spark_config.conf dataprocessing.py
+spark-submit --jars /opt/spark/jars/spark-sql-kafka-0-10_2.12-3.5.1.jar,/opt/spark/jars/postgresql-42.7.3.jar \
+             --files host_spark_config.conf \
+             --executor-memory 4G \
+             --executor-cores 2 \
+             --num-executors 4 \
+             test.py
+spark-submit --packages  org.postgresql:postgresql:42.2.28,org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.1,org.apache.kafka:kafka-clients:3.5.1,org.apache.spark:spark-token-provider-kafka-0-10_2.12:3.5.1 test.py
+
+
+spark-submit --jars /opt/spark/jars/postgresql-42.2.28.jar,/opt/spark/jars/spark-sql-kafka-0-10_2.12-3.5.1.jar,/opt/spark/jars/kafka-clients-.jar,/opt/spark/jars/spark-token-provider-kafka-0-10_2.12-3.5.1.jar test.py

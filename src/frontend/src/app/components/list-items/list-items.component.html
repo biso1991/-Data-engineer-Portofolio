@@ -1,0 +1,411 @@
+<div
+  (clickOutside)="onClickedOutside($event, 'details')"
+  [style]="
+    !topBarListing ? 'margin: auto;background: inherit; border: none;' : ''
+  "
+  class="list-item-wrapper noselect"
+>
+  <div class="top-bar-list" *ngIf="topBarListing">
+    <div id="filters_wrapper">
+      <span
+        >Showing {{ DisplayedRange }} of {{ count }}
+        <span>{{ displayOrderText }}</span>
+        <!-- FILTER 1 -->
+        <span *ngIf="keynameFilter1 && !typeFilterDynamic" id="Filter_1"
+          >{{ entityNamee + 's' }} {{ filter_preposition1 }} :
+          <select
+            (change)="changeFilter1($any($event.target).value)"
+            class="custom-select"
+            id="filter1"
+          >
+            <option value="" [selected]="!filterisActive">
+              Select {{ filter_name_model }}
+            </option>
+            <option
+              [selected]="
+                filterisActive && filter1Id && filter1Id === filter.id
+              "
+              *ngFor="let filter of listFilter1"
+              [value]="filter.id ? filter.id : filter.name"
+            >
+              {{ filter[keynameFilter1] }}
+            </option>
+          </select>
+          <i
+            (click)="cancelFilter1()"
+            *ngIf="filterisActive"
+            class="fas fa-window-close"
+          ></i>
+        </span>
+        <span *ngIf="keynameFilter1 && typeFilterDynamic" id="Filter_1"
+          >{{ entityNamee + 's' }} {{ filter_preposition1 }} :
+          <app-datalist
+            [optionsList]="{ list: listFilter1, search: searchedItems }"
+            [Isediting]="true"
+            [selectedItem]="selectedFilter1"
+            [name]="'name'"
+            [entity]="'Project'"
+            [displayErrors]="displayErrors"
+            (scrollBottom)="displayMore($event)"
+            (search)="searchE($event)"
+            (Select)="onChangedatalist($event)"
+            [cancel]="!filterisActive"
+          >
+          </app-datalist>
+          <i
+            (click)="cancelFilter1()"
+            *ngIf="filterisActive"
+            class="fas fa-window-close"
+          ></i>
+        </span>
+        <!-- FILTER 2 -->
+        <span *ngIf="keynameFilter2" id="Filter_2"
+          >{{ filter_name_model2 }} :
+          <select
+            (change)="changeFilter2($any($event.target).value)"
+            class="custom-select"
+            id="filter2"
+          >
+            <option value="" [selected]="!filter2isActive">
+              Select {{ filter_name_model2 }}
+            </option>
+            <option
+              [selected]="
+                filter.id
+                  ? filter2isActive && filter2Id && filter2Id === filter.id
+                  : filter2isActive && filter2Id && filter2Id === filter.name
+              "
+              *ngFor="let filter of listFilter2"
+              [value]="filter.id !== undefined ? filter.id : filter.name"
+            >
+              {{ filter[keynameFilter2] }}
+            </option>
+          </select>
+          <i
+            (click)="cancelFilter2()"
+            *ngIf="filter2isActive"
+            class="fas fa-window-close"
+          ></i>
+        </span>
+      </span>
+    </div>
+    <!-- (ngModelChange)="getProjectList()" -->
+    <div
+      (clickOutside)="onClickedOutside($event, 'search')"
+      id="right-side-top-bar"
+    >
+      <div class="input_wrapper_search">
+        <input
+          #searchinput="ngModel"
+          class="form-control"
+          id="search"
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="searchEvent()"
+          *ngIf="searchInput"
+          type="text"
+          [placeholder]="'Search ' + entityNamee"
+          (keydown.space)="!searchTerm ? $event.preventDefault() : ''"
+          [class.is-invalid]="searchinput.invalid && searchinput.touched"
+          autofocus
+          required
+        />
+        <!-- <div class="alert alert-danger search_error">
+                    At least 3 characters !
+                </div> -->
+      </div>
+      <i
+        [title]="!searchInput ? 'Search For ' + entityNamee : 'Close'"
+        (click)="showhide()"
+        [class]="!searchInput ? 'fas fa-search' : 'fas fa-window-close'"
+      ></i>
+    </div>
+  </div>
+  <div
+    class="list-items-component-titles"
+    [style]="!topBarListing ? 'margin: 5px 6px; padding: 3px;' : ''"
+  >
+    <span
+      [style]="getWidth()"
+      *ngFor="let title of titles"
+      [id]="getKeyBytitle(title)"
+      (click)="orderList(getKeyBytitle(title), title)"
+      [class]="getdoNotSort(title) ? 'item-name  nopointer' : 'item-name '"
+      >{{ title }}
+      <i *ngIf="!getdoNotSort(title)" class="fa fa-sort" aria-hidden="true"></i
+    ></span>
+    <span *ngIf="actionsButtons" class="actions">Actions </span>
+  </div>
+  <div
+    *ngIf="!count"
+    class="list-items-component"
+    style="text-align: center; pointer-events: none"
+  >
+    No {{ entityNamee }}
+    Found !
+  </div>
+  <div
+    *ngFor="let item of listItems"
+    class="list-items-component"
+    [style]="!topBarListing ? 'margin: 2px 6px;' : ''"
+  >
+    <div class="items-wrapper-inner">
+      <span
+        [style]="getWidth()"
+        *ngFor="let key of keys"
+        [class]="
+          key !== 'training_job_status' ? 'item-name' : 'training_job_status'
+        "
+      >
+        <span
+          *ngIf="!getContentByKey(key) && !getlinkByKey(key)"
+          [innerHTML]="
+            !getContentByKey(key) && !getlinkByKey(key) ? item[key] : null
+          "
+          >{{ item[key] }}</span
+        >
+
+        <a
+          [routerLink]="[getlinkByKey(key).path + item.id]"
+          [title]="item[key]"
+          *ngIf="
+            getlinkByKey(key) && !getKeynamebyKey(key) && !getExternalbyKey(key)
+          "
+          >{{ item[key] }}</a
+        >
+
+        <a
+          [routerLink]="[getlinkByKey(key).path + item[getKeynamebyKey(key)]]"
+          [title]="item[key]"
+          *ngIf="
+            getlinkByKey(key) && getKeynamebyKey(key) && !getExternalbyKey(key)
+          "
+          >{{ item[key] }}</a
+        >
+
+        <a
+          [href]="item[key]"
+          target="_blank"
+          rel="noopener"
+          [title]="item[key]"
+          *ngIf="
+            getlinkByKey(key) && !getKeynamebyKey(key) && getExternalbyKey(key)
+          "
+        >
+          <span style="margin: 0px" *ngIf="item.source === 0">Downalod</span>
+          <span style="margin: 0px" *ngIf="item.source === 1">Link Model</span>
+        </a>
+
+        <div
+          style="
+            display: flex;
+            justify-content: center;
+            height: 100%;
+            align-items: center;
+          "
+          *ngIf="getContentByKey(key) && key === 'training_job_status'"
+        >
+          <div
+            *ngIf="item.training_job_status_project.running"
+            class="training_job_status running animated"
+          ></div>
+          <div
+            *ngIf="
+              (!item.training_job_status_project.running &&
+                item.training_job_status_project.finished) ||
+              (!item.training_job_status_project.running &&
+                !item.training_job_status_project.finished)
+            "
+            class="training_job_status finished"
+          ></div>
+        </div>
+        <div
+          style="
+            display: flex;
+            justify-content: center;
+            height: 100%;
+            align-items: center;
+          "
+          *ngIf="key === 'status'"
+        >
+          <div
+            style="
+              display: flex;
+              flex-direction: row;
+              flex-wrap: nowrap;
+              align-items: center;
+              justify-content: center;
+              width: 70%;
+            "
+          >
+            <div
+              *ngIf="item.status === status.status.idle"
+              [title]="status.status[item.status].toUpperCase()"
+              class="training_job_status idle"
+            ></div>
+
+            <div
+              *ngIf="item.status === status.status.running"
+              [title]="status.status[item.status].toUpperCase()"
+              class="training_job_status running animated"
+            ></div>
+
+            <div
+              *ngIf="item.status === status.status.finished"
+              [title]="status.status[item.status].toUpperCase()"
+              class="training_job_status finished"
+            ></div>
+
+            <div
+              *ngIf="item.status === status.status.aborted"
+              [title]="status.status[item.status].toUpperCase()"
+              class="training_job_status aborted"
+            ></div>
+
+            <div
+              *ngIf="item.status === status.status.failed"
+              [title]="status.status[item.status].toUpperCase()"
+              class="training_job_status failed"
+            ></div>
+            <span id="textStatus">{{
+              status.status[item.status] | titlecase
+            }}</span>
+          </div>
+        </div>
+      </span>
+
+      <span
+        *ngIf="actionsButtons"
+        (click)="showDetails(item.id)"
+        class="actions"
+      >
+        <i
+          [class]="
+            details.id == item.id && details.open
+              ? 'fas fa-times'
+              : 'fa fa-chevron-left'
+          "
+          aria-hidden="true"
+        ></i>
+      </span>
+    </div>
+    <div
+      [style]="
+        details.id == item.id && details.open ? 'display:block' : 'display:none'
+      "
+      class="list-items-component details"
+    >
+      <div class="actions_buttons">
+        <span
+          [title]="getTitleByAction(action.action)"
+          (click)="handleAction(action.action, item.id)"
+          *ngFor="let action of actionsList"
+          class=""
+          ><i [class]="action.icon ? 'fa ' + action.icon : ''"></i>
+          {{ action.text }}</span
+        >
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGINATION -->
+  <div
+    *ngIf="count && pagination"
+    style="
+      height: 60px;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      align-items: center;
+    "
+  >
+    <span id="Pagination_Page_Size"
+      >{{ entityNamee + 's' }} per page:
+      <select
+        (change)="changePageSize($any($event.target).value)"
+        class="custom-select"
+        id="page_size"
+      >
+        <option value="10" selected>10</option>
+        <option value="30">30</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+      </select></span
+    >
+    <section class="pagination">
+      <button
+        title="Previous 2 pages"
+        (click)="setPage(pageNumber - 2)"
+        [disabled]="pageNumber - 2 < 1"
+        id="pg-button-prev"
+        type="button"
+        class="pagination__button"
+      >
+        <i class="fa fa-angle-double-left"></i>
+      </button>
+      <button
+        title="Previous Page"
+        (click)="setPage(pageNumber - 1)"
+        [disabled]="pageNumber == 1"
+        id="pg-button-prev"
+        type="button"
+        class="pagination__button"
+      >
+        <i class="fa fa-chevron-left"></i>
+      </button>
+
+      <ul *ngIf="numberOfPages <= 10" class="pagination__list">
+        <li
+          class="pagination__item"
+          (click)="setPage(i + 1)"
+          *ngFor="let in of counter(numberOfPages); let i = index"
+        >
+          <button
+            [class]="i + 1 == pageNumber ? 'active-page' : ''"
+            type="button"
+          >
+            {{ i + 1 }}
+          </button>
+        </li>
+      </ul>
+
+      <ul *ngIf="numberOfPages > 10" class="pagination__list">
+        <li
+          class="pagination__item"
+          (click)="setPage(parseInt(i))"
+          *ngFor="let i of counter(numberOfPages)"
+        >
+          <button
+            *ngIf="i !== '...'"
+            [class]="parseInt(i) === pageNumber ? 'active-page' : ''"
+            type="button"
+          >
+            {{ i }}
+          </button>
+          <span *ngIf="i === '...'">{{ i }}</span>
+        </li>
+      </ul>
+
+      <button
+        title="Next Page"
+        (click)="setPage(pageNumber + 1)"
+        [disabled]="pageNumber == numberOfPages"
+        id="pg-button-next"
+        type="button"
+        class="pagination__button"
+      >
+        <i class="fa fa-chevron-right"></i>
+      </button>
+      <button
+        title="Next 2 Pages"
+        (click)="setPage(pageNumber + 2)"
+        [disabled]="pageNumber + 2 > numberOfPages"
+        id="pg-button-next"
+        type="button"
+        class="pagination__button"
+      >
+        <i class="fa fa-angle-double-right"></i>
+      </button>
+    </section>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+kafka-python
+scipy==1.14.0
+pandas==2.2.0
+BeautifulSoup==3.2.1
+nltk==3.6.3
+regex==2024.5.10
+seaborn==0.12.1
+matplotlib==3.8.3

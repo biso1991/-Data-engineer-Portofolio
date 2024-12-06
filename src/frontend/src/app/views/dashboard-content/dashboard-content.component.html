@@ -1,0 +1,212 @@
+<div class="title_view_list">
+  <div class="container-md-height m-b-20" style="width: 100%">
+    <div class="row m-lg-0">
+      <div class="col-xl-7 col-lg-6">
+        <div class="full-height">
+          <div class="card-body text-center">
+            <img
+              class="image-responsive-height demo-mw-500"
+              src="/assets/img/dashboard_image.png"
+              alt=""
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-5 col-lg-6">
+        <div class="card card-transparent">
+          <div class="card-header">
+            <div class="card-title">Dashboard</div>
+          </div>
+          <div class="card-body">
+            <h3>Home</h3>
+            <p>From this page, you can view :</p>
+            <b>-Training Job creation per day for last 7 days</b>
+            <b>-Best performing training</b>
+            <b>-Current Running Tasks</b>
+            <b>-Latest voted Questions</b>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr />
+<div class="container body_wrapper">
+  <div style="width: 49%">
+    <div class="listing_item_info">
+      <span class="actions_container_listing">
+        <b class="title"
+          >Training Jobs Per Day
+          <div
+            data-title="From this tab you can view number of training jobs created by day (last week)"
+          >
+            <svg
+              disabled=""
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              cursor="help"
+              style="color: #a9abb6"
+            >
+              <path
+                d="M7.82 6a1 1 0 0 1 .99 1.16L8 12h2a1 1 0 1 1 0 2H7.18a1 1 0 0 1-.99-1.16L7 8H6a1 1 0 0 1 0-2h1.82ZM8.5 5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
+                shape-rendering="geometricPrecision"
+              ></path>
+            </svg>
+          </div>
+        </b>
+        <div
+          style="
+            display: flex;
+            flex-direction: row;
+            align-content: center;
+            align-items: center;
+            width: 17%;
+            justify-content: flex-end;
+          "
+        >
+          <span
+            ><a
+              [routerLink]="['/dashboard/training-job/']"
+              [title]="'View All Training Job'"
+              >View All</a
+            ></span
+          >
+        </div>
+      </span>
+      <hr />
+      <canvas id="my-chart"> </canvas>
+    </div>
+  </div>
+  <div style="width: 49%">
+    <div class="listing_item_info">
+      <span class="actions_container_listing">
+        <b class="title"
+          >Current Running Tasks
+          <div
+            data-title="From this tab you can view The current Running Tasks"
+          >
+            <svg
+              disabled=""
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              cursor="help"
+              style="color: #a9abb6"
+            >
+              <path
+                d="M7.82 6a1 1 0 0 1 .99 1.16L8 12h2a1 1 0 1 1 0 2H7.18a1 1 0 0 1-.99-1.16L7 8H6a1 1 0 0 1 0-2h1.82ZM8.5 5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
+                shape-rendering="geometricPrecision"
+              ></path>
+            </svg>
+          </div>
+        </b>
+      </span>
+      <hr />
+      <app-list-items
+        [paginationV]="false"
+        [topBar]="false"
+        [actions]="false"
+        [entityName]="'Running Tasks'"
+        [listItem]="listRunningTasks"
+        [structurelist]="structure"
+        [countP]="listRunningTasks.length"
+      >
+      </app-list-items>
+    </div>
+  </div>
+</div>
+<div class="container body_wrapper" style="margin-top: 2%; margin-bottom: 2%">
+  <div style="width: 49%">
+    <div class="listing_item_info">
+      <span class="actions_container_listing">
+        <b class="title"
+          >Best Performing Training
+          <div
+            data-title="From this tab you can view Best Performing Training by accuracy"
+          >
+            <svg
+              disabled=""
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              cursor="help"
+              style="color: #a9abb6"
+            >
+              <path
+                d="M7.82 6a1 1 0 0 1 .99 1.16L8 12h2a1 1 0 1 1 0 2H7.18a1 1 0 0 1-.99-1.16L7 8H6a1 1 0 0 1 0-2h1.82ZM8.5 5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
+                shape-rendering="geometricPrecision"
+              ></path>
+            </svg>
+          </div>
+        </b>
+      </span>
+      <hr />
+      <app-list-items
+        [paginationV]="false"
+        [topBar]="false"
+        [actions]="false"
+        [entityName]="'Projects'"
+        [listItem]="listTrainingJobsMOnitoring"
+        [structurelist]="structureMonitoring"
+        [countP]="listTrainingJobsMOnitoring.length"
+      >
+      </app-list-items>
+    </div>
+  </div>
+  <div style="width: 49%">
+    <div class="listing_item_info">
+      <span class="actions_container_listing">
+        <b class="title"
+          >Latest Voted Questions
+          <div
+            data-title="From this tab you can view latest 10 Voted Questions"
+          >
+            <svg
+              disabled=""
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              cursor="help"
+              style="color: #a9abb6"
+            >
+              <path
+                d="M7.82 6a1 1 0 0 1 .99 1.16L8 12h2a1 1 0 1 1 0 2H7.18a1 1 0 0 1-.99-1.16L7 8H6a1 1 0 0 1 0-2h1.82ZM8.5 5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
+                shape-rendering="geometricPrecision"
+              ></path>
+            </svg>
+          </div>
+        </b>
+        <div
+          style="
+            display: flex;
+            flex-direction: row;
+            align-content: center;
+            align-items: center;
+            width: 17%;
+            justify-content: flex-end;
+          "
+        >
+          <span style="margin-bottom: 0px"
+            ><a
+              [routerLink]="['/dashboard/question-answering']"
+              [title]="'View All Training Job'"
+              >View All ({{ QaCount }})</a
+            ></span
+          >
+        </div>
+      </span>
+      <hr />
+      <app-list-items
+        [paginationV]="false"
+        [topBar]="false"
+        [actions]="false"
+        [entityName]="'Question'"
+        [listItem]="listQuestion"
+        [structurelist]="structureQA"
+        [countP]="listTrainingJobsMOnitoring.length"
+      >
+      </app-list-items>
+    </div>
+  </div>
+</div>

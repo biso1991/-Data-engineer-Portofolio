@@ -1,0 +1,18 @@
+<lib-toastify-toast-container
+  [closeOnClick]="true"
+  [transition]="'slide'"
+  [iconLibrary]="'font-awesome'"
+>
+</lib-toastify-toast-container>
+<ngx-loading-bar
+  [class.white]="loadingBar"
+  diameter="22px"
+  ref="router"
+  [includeSpinner]="false"
+></ngx-loading-bar>
+<ngx-loading-bar
+  diameter="22px"
+  ref="http"
+  [includeSpinner]="false"
+></ngx-loading-bar>
+<router-outlet></router-outlet>

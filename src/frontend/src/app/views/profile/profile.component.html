@@ -1,0 +1,366 @@
+<div id="wrapper">
+  <div [hidden]="Modal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <div>
+        <i
+          class="close"
+          (click)="ModalToogle()"
+          style="float: right"
+          class="fas fa-window-close"
+        ></i>
+        <h4 style="width: fit-content; margin: auto; margin-top: 45px">
+          Are you sure you want to delete your account ?
+        </h4>
+        <div class="warning-removing-account">
+          This is an irreversible action , your account and all your data will
+          be deleted !
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; margin: 45px">
+        <button
+          (click)="DeleteAccount()"
+          style="margin-bottom: 0px !important; margin-right: 16px"
+          class="btn btn-danger btn-icon-split"
+        >
+          <span class="icon text-white-50">
+            <i class="fas fa-trash"></i>
+          </span>
+          <span class="text">Yes</span>
+        </button>
+        <button
+          (click)="ModalToogle()"
+          style="margin-bottom: 0px !important"
+          class="btn btn-info btn-icon-split"
+        >
+          <span class="icon text-white-50">
+            <i class="fas fa-times"></i>
+          </span>
+          <span class="text">No</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div id="content-wrapper" class="d-flex flex-column">
+    <!-- Main Content -->
+    <div id="content">
+      <h2>Profile</h2>
+      <hr />
+      <!-- FROFILE CARD -->
+      <div class="container">
+        <table>
+          <tbody>
+            <tr [hidden]="profileCard">
+              <td>
+                <section>
+                  <img
+                    class="img-profile rounded-circle"
+                    src="https://ui-avatars.com/api/?name={{
+                      user.username
+                    }}&background=random"
+                  />
+                </section>
+                <h1>{{ user.username }}</h1>
+                <h3>{{ user.email }}</h3>
+              </td>
+              <td style="padding: 10px">
+                <ul id="profileUl" style="margin-bottom: 0px">
+                  <!-- First Name -->
+                  <li class="item-info-profile">
+                    <div class="list-info">
+                      <b>First name : </b>
+                      <input
+                        [class.is-invalid]="
+                          FirstName.invalid && FirstName.touched
+                        "
+                        [class]="edit.FirstName.edit ? 'editEvent' : ''"
+                        name="FirstName"
+                        id="FirstName"
+                        [(ngModel)]="user.FirstName"
+                        #FirstName="ngModel"
+                        type="text"
+                        minlength="3"
+                        maxlength="30"
+                      />
+                    </div>
+                    <i
+                      [class]="
+                        edit.FirstName.edit ? 'fas fa-check' : 'fas fa-edit'
+                      "
+                      (click)="Edit(FirstName, edit.FirstName.edit)"
+                      [class.disabled]="FirstName.invalid && FirstName.touched"
+                    ></i>
+                    <i
+                      (click)="cancel(FirstName)"
+                      [class]="
+                        !edit.FirstName.edit ? 'hide' : 'fas fa-window-close'
+                      "
+                    ></i>
+                  </li>
+                  <div
+                    *ngIf="FirstName.invalid && FirstName.touched"
+                    class="alert alert-danger"
+                  >
+                    <div *ngIf="FirstName.errors?.['minlength']">
+                      First Name must be at least 3 characters long.
+                    </div>
+                    <div *ngIf="FirstName.errors?.['maxlength']">
+                      First Name must be under 31 characters long.
+                    </div>
+                  </div>
+                  <!-- Last Name -->
+                  <li class="item-info-profile">
+                    <div class="list-info">
+                      <b>Last name : </b>
+                      <input
+                        [class.is-invalid]="
+                          LastName.invalid && LastName.touched
+                        "
+                        [class]="edit.LastName.edit ? 'editEvent' : ''"
+                        name="LastName"
+                        id="LastName"
+                        [(ngModel)]="user.LastName"
+                        #LastName="ngModel"
+                        type="text"
+                        minlength="3"
+                        maxlength="30"
+                      />
+                    </div>
+                    <i
+                      [class]="
+                        edit.LastName.edit ? 'fas fa-check' : 'fas fa-edit'
+                      "
+                      (click)="Edit(LastName, edit.LastName.edit)"
+                      [class.disabled]="LastName.invalid && LastName.touched"
+                    ></i>
+                    <i
+                      (click)="cancel(LastName)"
+                      [class]="
+                        !edit.LastName.edit ? 'hide' : 'fas fa-window-close'
+                      "
+                    ></i>
+                  </li>
+                  <div
+                    *ngIf="LastName.invalid && LastName.touched"
+                    class="alert alert-danger"
+                  >
+                    <div *ngIf="LastName.errors?.['minlength']">
+                      Last Name must be at least 3 characters long.
+                    </div>
+                    <div *ngIf="LastName.errors?.['maxlength']">
+                      Last Name must be under 31 characters long.
+                    </div>
+                  </div>
+                  <!-- Email -->
+                  <li class="item-info-profile">
+                    <div class="list-info">
+                      <b>Email : </b>
+                      <input
+                        [class.is-invalid]="email.invalid && email.touched"
+                        [class]="edit.email.edit ? 'editEvent' : ''"
+                        name="email"
+                        id="email"
+                        [(ngModel)]="user.email"
+                        #email="ngModel"
+                        type="email"
+                        minlength="3"
+                        pattern="[a-zA-Z0-9._-]*@[a-zA-Z]*\.[a-zA-Z]{2,3}"
+                        required
+                      />
+                    </div>
+                    <i
+                      [class]="edit.email.edit ? 'fas fa-check' : 'fas fa-edit'"
+                      (click)="Edit(email, edit.email.edit)"
+                      [class.disabled]="email.invalid && email.touched"
+                    ></i>
+                    <i
+                      (click)="cancel(email)"
+                      [class]="
+                        !edit.email.edit ? 'hide' : 'fas fa-window-close'
+                      "
+                    ></i>
+                  </li>
+                  <div
+                    *ngIf="email.invalid && email.touched"
+                    class="alert alert-danger"
+                  >
+                    <div *ngIf="email.errors?.['pattern']">
+                      Email address is invalid
+                    </div>
+                    <div *ngIf="email.errors?.['required']">
+                      Email address is required
+                    </div>
+                  </div>
+                  <li
+                    id="button_profile"
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      padding: 0px;
+                      margin-top: 7%;
+                      border: inherit;
+                    "
+                  >
+                    <button
+                      [routerLink]="['/dashboard/profile', 'resetPassword']"
+                      style="margin: 0px; margin-bottom: 0px !important"
+                      class="btn btn-primary btn-icon-split"
+                    >
+                      <span class="icon text-white-50">
+                        <i class="fas fa-sync-alt"></i>
+                      </span>
+                      <span class="text">Reset Password</span>
+                    </button>
+                    <div id="profile_buttons2">
+                      <button
+                        (click)="ModalToogle()"
+                        style="
+                          margin-bottom: 0px !important;
+                          margin-right: 16px;
+                        "
+                        class="btn btn-danger btn-icon-split"
+                      >
+                        <span class="icon text-white-50">
+                          <i class="fas fa-trash"></i>
+                        </span>
+                        <span class="text">Delete Account ?</span>
+                      </button>
+                      <button
+                        [routerLink]="['/forgot-password']"
+                        style="margin-bottom: 0px !important"
+                        class="btn btn-info btn-icon-split"
+                      >
+                        <span class="icon text-white-50">
+                          <i class="fas fa-key"></i>
+                        </span>
+                        <span class="text">Forgot Password ?</span>
+                      </button>
+                    </div>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr [hidden]="ResetPasswordshow">
+              <td colspan="2">
+                <div>
+                  <i
+                    [routerLink]="['/dashboard/profile']"
+                    style="float: right"
+                    class="fas fa-window-close"
+                  ></i>
+                </div>
+                <div style="margin-bottom: 9%; height: fit-content">
+                  <h3 style="float: left">Reset Password</h3>
+                </div>
+                <div>
+                  <form
+                    [formGroup]="ResetPasswordForm"
+                    (ngSubmit)="ResetPasswordAction()"
+                    class="user"
+                    style="all: inherit"
+                  >
+                    <div class="form-group">
+                      <i
+                        [class]="
+                          showPassword
+                            ? 'fa fa-eye first'
+                            : 'fa fa-eye-slash first'
+                        "
+                        (click)="showPasswordEv()"
+                      ></i>
+                      <input
+                        style="width: 99%"
+                        [class.is-invalid]="
+                          OldPassword.invalid && OldPassword.touched
+                        "
+                        [type]="showPassword ? 'text' : 'password'"
+                        autocomplete="current-password"
+                        class="form-control form-control-user"
+                        formControlName="OldPassword"
+                        placeholder="Old password"
+                      />
+                      <div
+                        *ngIf="OldPassword.invalid && OldPassword.touched"
+                        class="alert alert-danger"
+                      >
+                        <div *ngIf="OldPassword.errors?.['required']">
+                          Old Password is required.
+                        </div>
+                        <div *ngIf="OldPassword.errors?.['minlength']">
+                          Old Password must be at least 6 characters long.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group" style="display: inherit">
+                      <input
+                        style="width: 99%"
+                        [class.is-invalid]="
+                          NewPassword.invalid && NewPassword.touched
+                        "
+                        [type]="showPassword ? 'text' : 'password'"
+                        autocomplete="new-password"
+                        class="form-control form-control-user"
+                        formControlName="NewPassword"
+                        placeholder="New password"
+                      />
+                      <div
+                        *ngIf="NewPassword.invalid && NewPassword.touched"
+                        class="alert alert-danger"
+                      >
+                        <div *ngIf="NewPassword.errors?.['required']">
+                          New Password is required.
+                        </div>
+                        <div *ngIf="NewPassword.errors?.['minlength']">
+                          New Password must be at least 6 characters long.
+                        </div>
+                        <div *ngIf="NewPassword.errors?.['passwordmatch']">
+                          New Password should be different than Old Password !
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group" style="display: inherit">
+                      <input
+                        style="width: 99%"
+                        [class.is-invalid]="
+                          NewPasswordco.invalid && NewPasswordco.touched
+                        "
+                        [type]="showPassword ? 'text' : 'password'"
+                        autocomplete="new-password"
+                        class="form-control form-control-user"
+                        formControlName="NewPasswordco"
+                        placeholder="Confirm password"
+                      />
+                      <div
+                        *ngIf="NewPasswordco.invalid && NewPasswordco.touched"
+                        class="alert alert-danger"
+                      >
+                        <div *ngIf="NewPasswordco.errors?.['required']">
+                          Password is required.
+                        </div>
+                        <div *ngIf="NewPasswordco.errors?.['minlength']">
+                          Password must be at least 6 characters long.
+                        </div>
+                        <div *ngIf="NewPasswordco.errors?.['passwordMismatch']">
+                          Password does not match !
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group" style="display: inherit">
+                      <button
+                        style="width: 15%; float: left; margin-left: 0px"
+                        [disabled]="ResetPasswordForm.invalid"
+                        class="btn btn-primary btn-user btn-block mb-3"
+                      >
+                        Reset
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

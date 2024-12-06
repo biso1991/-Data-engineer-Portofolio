@@ -1,0 +1,298 @@
+<div class="title_view_list" id="titleAnswersss">
+  <div class="container-md-height m-b-20">
+    <div class="row m-lg-0">
+      <div class="col-xl-7 col-lg-6">
+        <div class="full-height">
+          <div class="card-body text-center">
+            <img
+              class="image-responsive-height demo-mw-500"
+              src="/assets/img/qa-image.png"
+              alt=""
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-5 col-lg-6">
+        <div class="card card-transparent">
+          <div class="card-header">
+            <div class="card-title">Ask a Question</div>
+          </div>
+          <div class="card-body">
+            <h3>Ask a Question</h3>
+            <p>From this page, you can ask a question and vote on good ones.</p>
+            <br />
+            <span (click)="AsqQuestion()" class="add_button blob button"
+              ><i
+                [class]="Questioning ? 'fa fa-arrow-left' : 'fa fa-plus'"
+                aria-hidden="true"
+                style="margin-right: 9px"
+              ></i>
+              {{
+                Questioning ? 'Return To list Questions' : 'Ask a Question'
+              }}</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr />
+<div
+  *ngIf="!Questioning"
+  [class]="Questioning ? 'container fade-out' : 'container'"
+>
+  <app-list-items
+    [entityName]="'Answer'"
+    [countP]="count"
+    [listItem]="AnswerListToDisplay"
+    [structurelist]="structure"
+    (search)="setSearchTerm($event)"
+    (ordering)="orderList($event)"
+    (setPageE)="setPage($event)"
+    [ActionListD]="listActions"
+    (delete)="showHideModal($event)"
+    (PageSize)="changePageSize($event)"
+    [FilterItem1]="{
+      list: listProjects,
+      key: 'name',
+      filter_name_model: 'Project',
+      preposition: 'of',
+      type: true,
+      error: false,
+      searchedItems: searchedProject
+    }"
+    [SelectedFilter1]="selectedProject"
+    (displayMoreEv)="displayMore($event)"
+    (searchFilter)="searchProject($event)"
+    (filterSelect)="onChangedatalist($event)"
+    (Filter1)="onChangedatalist($event)"
+    (edit)="editAnswer($event)"
+  >
+  </app-list-items>
+  <app-delete-modal
+    *ngIf="deleteModal"
+    [entityName]="'Answer'"
+    [itemsToRemove]="itemToRemove"
+    (close)="showHideModal()"
+    [entityNameKeyP]="'answer'"
+    [EntityToRemove]="AnswerRemove"
+    (delete_qa)="DeleteAnswer($event)"
+    [SimpleModal]="true"
+  >
+  </app-delete-modal>
+</div>
+<div *ngIf="Questioning" class="container fade-in">
+  <div *ngIf="!QaAnswersList.length" class="question_wrapper">
+    <div *ngIf="QuestioningProcessing" class="loader_questions">
+      <div class="loaderFromHuggingFace">
+        <div class="lds-roller">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <b>{{ '' }}</b>
+      </div>
+    </div>
+    <h2 style="font-weight: 200">Ask Me A Question</h2>
+    <hr style="width: 100%; margin: 17px 0px" />
+    <form #f="ngForm">
+      <div style="width: 80%; min-height: 49.5px">
+        <input
+          (keydown.space)="!Question ? $event.preventDefault() : ''"
+          name="question"
+          type="text"
+          class="form-control"
+          minlength="10"
+          maxlength="150"
+          placeholder="Type or paste your question !"
+          autocomplete="off"
+          #question="ngModel"
+          class="form-control input_true"
+          [(ngModel)]="Question"
+          (ngModelChange)="verify(f)"
+          [class.is-invalid]="question.invalid && question.touched"
+          required
+        />
+        <div
+          *ngIf="question.invalid && question.touched"
+          class="alert alert-danger"
+        >
+          <div *ngIf="question.errors?.['minlength']">
+            <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Question minimum
+            10 characters
+          </div>
+          <div *ngIf="question.errors?.['required']">
+            <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Question is
+            required
+          </div>
+        </div>
+      </div>
+      <app-datalist
+        [Special]="true"
+        [optionsList]="{ list: listProjects, search: searchedProject }"
+        [Isediting]="true"
+        [selectedItem]="null"
+        [name]="'name'"
+        (Select)="onChangedatalist($event, true, f)"
+        (errorE)="verify(f, $event)"
+        (scrollBottom)="displayMore($event)"
+        (search)="searchProject($event)"
+        [entity]="'Project'"
+      >
+      </app-datalist>
+      <button
+        (click)="GetAnswersFromQuestion()"
+        [style]="!formisvalid ? 'pointer-events: none;' : null"
+        [disabled]="!formisvalid || errorFilesNotReady"
+        id="get_answers_button"
+      >
+        Get Answers
+      </button>
+    </form>
+  </div>
+  <div *ngIf="QaAnswersList.length" class="actions_vote fade-in">
+    <button (click)="VoteQA()" title="Vote on Answers" class="button_vote">
+      <i aria-hidden="true" class="fa fa-check"></i>Vote</button
+    ><button (click)="CancelQuestion()" title="Cancel" class="cancel_vote">
+      <i aria-hidden="true" class="fa fa-times"></i>Cancel
+    </button>
+  </div>
+  <div
+    *ngIf="QaAnswersList.length"
+    class="answers_wrapper fade-in"
+    style="margin-bottom: 6%"
+  >
+    <div class="answers_container answer_question">
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          flex-wrap: nowrap;
+          justify-content: space-between;
+        "
+      >
+        <h5>
+          Answers of: {{ Question }} / Project: {{ QuestionProject.name }}
+        </h5>
+        <span
+          [class]="fixedCounter ? 'fixed' : null"
+          id="counter"
+          style="
+            right: 1%;
+            top: 1%;
+            background: #d9d9d9;
+            padding: 7px 36px;
+            border-radius: 6px;
+            z-index: 1;
+            color: #4d4d4d;
+          "
+          >Accepted: {{ acceptedAnswers }} / Rejected:
+          {{ rejectedAnswers }}</span
+        >
+      </div>
+      <b style="font-weight: 300; color: red"
+        >*Every Answer not voted will be considered as rejected</b
+      >
+      <hr />
+      <div
+        *ngFor="let answer of QaAnswersList; let i = index"
+        class="single_answer_wrapper"
+        [class]="
+          answer.chosen === true
+            ? 'chosen'
+            : answer.chosen === false
+            ? 'rejected'
+            : null
+        "
+      >
+        <span class="answer_text"
+          ><b
+            style="
+              padding: 1px 11px;
+              background: #ffffff78;
+              font-weight: 400;
+              border-radius: 2px;
+              margin-right: 5px;
+            "
+            >{{ i + 1 + '#' }}</b
+          ><b> Answer: </b>{{ answer.answer }}</span
+        >
+        <hr />
+        <span class="context_text"><b>Context: </b>{{ answer.context }}</span>
+        <span class="file_name_answer"
+          ><b
+            >File:
+            <a
+              [routerLink]="
+                getIdFromList(answer.meta.name) !== -1
+                  ? ['/dashboard/file/single/', getIdFromList(answer.meta.name)]
+                  : null
+              "
+              target="_blank"
+              >{{ answer.meta.name }}</a
+            ></b
+          ></span
+        >
+        <span class="score_value_answer"
+          ><b>Score: {{ convertScore(answer) }}</b></span
+        >
+        <span class="Vote_answer">
+          <span
+            (click)="acceptAnswer(answer)"
+            title="Accept the Answer and mark it as valid"
+            class="accpet_vote"
+          >
+            <i class="fa fa-check" aria-hidden="true"></i>
+            <span class="button_text_vote">Accept</span>
+          </span>
+          <span
+            (click)="rejectAnswer(answer)"
+            title="Reject the Answer and mark it as invalid"
+            class="reject_vote"
+          >
+            <i class="fa fa-times" aria-hidden="true"></i>
+            <span class="button_text_vote">Reject</span>
+          </span>
+        </span>
+      </div>
+    </div>
+    <div class="files_container answer_question">
+      <h5>Files</h5>
+      <hr />
+      <div
+        [id]="file.name"
+        [title]="file.name"
+        *ngFor="let file of FileQAList"
+        class="file"
+      >
+        <div
+          [style]="
+            'background-image: url(' +
+            getBackgroundImage(file.name) +
+            '); background-size: contain;
+                    background-repeat: no-repeat;height: 50%; margin: auto; width: 38%;'
+          "
+        ></div>
+
+        <small
+          ><span
+            ><a
+              [routerLink]="
+                file.id !== -1 ? ['/dashboard/file/single/', file.id] : null
+              "
+              target="_blank"
+            >
+              {{ file.name }}</a
+            ></span
+          ><span>score:{{ convertScore(file) }}</span></small
+        >
+      </div>
+    </div>
+  </div>
+</div>

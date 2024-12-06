@@ -1,0 +1,352 @@
+version: '3.8'
+services:
+  postgres:
+    container_name: postgres 
+    image: postgres:11.6
+    environment:
+      POSTGRES_USER: dbuser
+      POSTGRES_PASSWORD: dbpassword
+      POSTGRES_DB: ecom_db
+    networks:
+    - local_network
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: dbuser@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: 1991
+    ports:
+      - 5050:80
+    depends_on:
+      - postgres
+      - web
+    networks:
+    - local_network 
+
+  web:
+    restart: always
+    container_name: web
+    environment:
+      - DJANGO_SECRET_KEY='django-insecure-guysx2yy9!%uvle=$mo35rba=rmt#j*6rs!s51!!_t4^6i(h1)'
+    build: 
+      context: ./src
+      dockerfile: Dockerfile
+         # python wait_for_postgres.py &&
+    command: >
+      bash -c " 
+                python manage.py makemigrations ;
+                python manage.py migrate ;
+                python manage.py runserver 0.0.0.0:8000 ;
+                "
+               
+                
+             
+    volumes:
+    #  ./manage.py makemigrations &&
+    # ./manage.py runserver 0.0.0.0:8000"
+      # - ./:/code
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - redis
+    networks:
+    - local_network
+
+  redis:
+      container_name: redis
+      image: redis:6.2-alpine
+      restart: always
+      # network_mode: 172.22.0.3
+      ports:
+        - '6379:6379'
+      # tty: true
+      command: redis-server --save 20 1 --loglevel warning
+      volumes:
+        - cache-redis:/data
+      networks:
+        - local_network      
+      
+# # #   zoo1:
+# # #     build: 
+# # #       context: ./kafka
+# # #       dockerfile: Dockerfile_1
+# # #     hostname: zoo1
+# # #     ports:
+# # #       - "2181:2181"  
+# # #     environment:
+# # #         ZOOKEEPER_CLIENT_PORT: 2181
+# # #         ZOOKEEPER_SERVER_ID: 1
+# # #         ZOOKEEPER_SERVERS: zoo1:2888:3888
+# # #     depends_on:
+# # #       - spark-yarn-master
+  zookeeper:
+    container_name: zoo
+    image: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    restart: always
+    # depends_on:
+      # - web
+      # - postgres
+      # - redis
+    networks:
+        - local_network
+  kafka: # kafka broker !!!!!!!!
+    build:
+      dockerfile: Dockerfile
+      context: ./kafka_pro
+    
+    # image: confluentinc/cp-kafka:latest
+    container_name: kafka 
+    # command: "
+    #           yum  install http 
+
+    #           "
+              
+    ports:
+     - "9092:9092"
+     - "29023:29023"
+     - "29025:29025"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1  
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT,EXTERN_SOME:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:9092,OUTSIDE://localhost:29025,EXTERN_SOME://192.125.16.24:29023
+      KAFKA_LISTENERS: INSIDE://:9092,OUTSIDE://:9094,EXTERN_SOME://:29023
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    restart: always
+    
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - local_network
+
+
+  # hadoop_master:
+  #   container_name: hadoop-master
+  #   build:
+  #     dockerfile: Dockerfile
+  #     context: ./hadoop_yarn
+  #   image: hadoop-image
+  #   entrypoint: ['./entrypoint.sh', 'hadoop_master']  
+  #   volumes:
+  #     - namenode-data:/opt/hadoop/hadoop_data/namenode
+  #   depends_on:
+  #     - web
+  #     - postgres
+  #     - kafka
+  #   ports: 
+  #     - '9870:9870'
+  #     - '8088:8088'
+  #   restart: always
+  #   networks:
+  #   - local_network
+  # namenode:
+  #   build:
+  #     context: ./hadoop_yarn
+  #     dockerfile: Dockerfile
+  #   container_name: namenode
+  #   environment:
+  #     # - HADOOP_WORKLOAD=namenode
+  #     - CLUSTER_NAME=mycluster
+  #   volumes:
+  #     - hadoop_namenode_data:/opt/hadoop/data/nameNode
+  #   entrypoint: ['./hadoop_entrypoint.sh', 'namenode']
+  #   ports:
+  #     - "9870:9870"  
+  # datanode:
+  #   build:
+  #     context: ./hadoop_yarn
+  #     dockerfile: Dockerfile
+  #   container_name: datanode
+  #   # environment:
+  #     # - HADOOP_WORKLOAD=datanode
+  #   entrypoint: ['./hadoop_entrypoint.sh', 'datanode']
+    
+  #   volumes:
+  #     - hadoop_datanode_data:/opt/hadoop/data/dataNode
+  # resourcemanager:
+  #   build:
+  #     context: ./hadoop_yarn
+  #     dockerfile: Dockerfile
+  #   container_name: resourcemanager
+  #   # environment:
+  #   #   - HADOOP_WORKLOAD=resourcemanager
+  #   entrypoint: ['./hadoop_entrypoint.sh', 'resourcemanager']
+  #   ports:
+  #     - "8088:8088"  
+
+  # nodemanager:
+  #   build:
+  #     context: ./hadoop_yarn
+  #     dockerfile: Dockerfile
+  #   container_name: nodemanager
+  #   entrypoint: ['./hadoop_entrypoint.sh', 'nodemanager']
+  #   # environment:
+  #   #   - HADOOP_WORKLOAD=nodemanager
+
+  # historyserver:
+  #   build:
+  #     context: ./hadoop_yarn
+  #     dockerfile: Dockerfile
+  #   container_name: historyserver
+  #   # environment:
+  #     # - HADOOP_WORKLOAD=historyserver
+  #   entrypoint: ['./hadoop_entrypoint.sh', 'historyserver']
+  #   ports:
+  #     - "19888:19888"  
+
+  spark-master:
+    build:
+      context: ./spark
+      dockerfile: Dockerfile
+    container_name: spark-master
+    image: spark-image
+    command: >
+      bash -c "pip install kafka-python"
+    restart: always
+
+    env_file:
+      - .env.spark
+    entrypoint: ['./spark_entrypoint.sh', 'spark-master']
+    depends_on:
+    - zookeeper
+    - kafka 
+    ports:
+      - "7077:7077"
+      - "8080:8080"
+      - "4040:4040"
+    networks:
+      - local_network
+    volumes:
+      - spark-logs:/opt/spark/logs
+      - spark_apps:/opt/spark/spark_apps
+      # - hadoop-config:/opt/hadoop/etc/hadoop
+
+
+  spark-worker:
+    build:
+      context: ./spark
+      dockerfile: Dockerfile
+    container_name: spark-worker
+    environment:
+      - SPARK_WORKLOAD=spark-worker
+      - SPARK_MASTER=spark://spark-master:7077
+      - SPARK_WORKER_CORES=1
+      - SPARK_WORKER_MEMORY=1G
+      - SPARK_DRIVER_MEMORY=1G
+      - SPARK_EXECUTOR_MEMORY=1G
+      - SPARK_LOCAL_IP=spark-worker
+    entrypoint: ['./spark_entrypoint.sh', 'spark-worker']
+    env_file:
+    - .env.spark
+    depends_on:
+      - spark-master
+    ports:
+      - "8081:8081"
+    networks:
+    - local_network
+    restart: always
+    volumes:
+      - spark-logs:/opt/spark/logs
+      - spark_apps:/opt/spark/spark_apps
+
+  # spark-history:
+  #   build:
+  #     context: ./spark
+  #     dockerfile: Dockerfile
+  #   container_name: spark-history
+  #   # environment:
+  #     # - SPARK_WORKLOAD=spark-history
+  #   entrypoint: ['./spark_entrypoint.sh', 'spark-history']
+  #   env_file:
+  #   - .env.spark
+  #   ports:
+  #     - "18080:18080"
+  #   depends_on:
+  #     - spark-master
+  #   volumes:
+  #     - spark-logs:/opt/spark/logs
+
+volumes:
+  cache-redis:
+    driver: local
+  # hadoop_namenode_data:
+  # hadoop_datanode_data:
+  spark-logs:
+  spark_apps:
+
+networks:
+  local_network:
+    name: local_networks
+    driver: bridge
+  
+
+################################################################
+  # SP_master:
+  #   container_name: spark-master
+  #   build:
+  #     dockerfile: Dockerfile-yarn
+  #     context: ./spark_hadoop
+  #   image: spark-image
+  #   entrypoint: ['./entrypoint_yarn.sh', 'master']
+  #   command: >
+  #     bash -c " export SPARK_MASTER="spark://spark-master:7077"
+ 
+  #             "
+    
+  #   volumes:
+  #     - ./spark_hadoop/spark_apps:/opt/spark/apps
+  #     - /var/run/docker.sock:/var/run/docker.sock
+
+  #   env_file:
+  #     - .env.spark
+  #   # depends_on:
+  #   #   - web
+  #   #   - postgres
+  #   #   - kafka
+  #   ports:
+  #     - '8080:8080'
+  #     - '9870:9870'
+  #     - '7077:7077'
+  #     - '8088:8088'
+  #   restart: always
+  #   networks:
+  #   - local_network
+  # SP_worker:
+  #   container_name: spark-worker
+  #   image: spark-image
+  #   entrypoint: ['./entrypoint_yarn.sh', 'worker']
+  #   depends_on:
+  #     - SP_master
+  #   env_file:
+  #     - .env.spark
+  #   volumes:
+  #     - ./spark_hadoop/spark_apps:/opt/spark/apps
+  #     # - /var/run/docker.sock:/var/run/docker.sock
+  #   networks:
+  #   - local_network
+  #   restart: always
+  # SP_history-server:
+  #   container_name: spark-history
+  #   image: spark-image
+  #   entrypoint: ['./entrypoint_yarn.sh', 'history']
+  #   depends_on:
+  #     - SP_master
+  #   env_file:
+  #     - .env.spark
+  #   ports:
+  #     - '18080:18080'
+  #   networks:
+  #   - local_network
+  #   restart: always
+
+

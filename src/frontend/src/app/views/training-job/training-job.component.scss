@@ -1,0 +1,189 @@
+/* stylelint-disable selector-pseudo-element-no-unknown */
+/* stylelint-disable selector-id-pattern */
+/* stylelint-disable keyframes-name-pattern */
+/* stylelint-disable comment-empty-line-before */
+/* stylelint-disable font-family-name-quotes */
+/* stylelint-disable font-family-no-missing-generic-family-keyword */
+/* stylelint-disable length-zero-no-unit */
+/* stylelint-disable property-no-vendor-prefix */
+/* stylelint-disable number-max-precision */
+/* stylelint-disable declaration-block-no-duplicate-properties */
+/* stylelint-disable shorthand-property-no-redundant-values */
+/* stylelint-disable selector-class-pattern */
+/* stylelint-disable declaration-block-no-redundant-longhand-properties */
+/* stylelint-disable no-descending-specificity */
+/* stylelint-disable rule-empty-line-before */
+
+@use '../../../palette' as *;
+
+span.add_button {
+  padding: 4px 20px;
+  background: var(--add-button-color);
+  border-radius: 6px;
+  text-transform: capitalize;
+  font-weight: 700;
+  font-size: 14px;
+  height: 28px;
+  color: white;
+  width: 50%;
+  text-align: center;
+}
+
+.card-body p {
+  margin-bottom: 0px;
+}
+
+.card-body p,
+h3 {
+  color: var(--password-color-button);
+}
+
+.card-title {
+  font-family: Montserrat, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  font-weight: 100;
+}
+
+.card.card-transparent {
+  background: transparent;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border: none;
+}
+
+.card-header {
+  /* stylelint-disable-next-line color-hex-length */
+  background: #ff000000;
+  border: none;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background: transparent;
+  padding: 1rem;
+}
+
+img.image-responsive-height.demo-mw-500 {
+  max-width: 300px;
+  margin: auto;
+  background: transparent;
+}
+
+.col-xl-7.col-lg-6.bg-white {
+  background: transparent !important;
+}
+
+span.add_button:hover {
+  background: var(--add-button-color-hover);
+  cursor: pointer;
+}
+
+.list-item-wrapper {
+  width: 98%;
+  display: flex;
+  flex-direction: column;
+  margin: 18px;
+  background: #ffffffb3;
+  border-radius: 10px;
+  border: 1px solid #aeaeae3b;
+}
+
+.active {
+  background: #c4c4c4 !important;
+  color: white;
+}
+
+.list-items-component {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  margin: 10px 12px;
+  padding: 3px;
+  background-color: #e0e1e980;
+  border-radius: 10px;
+}
+
+.top-bar-list {
+  margin: 13px 12px 2px 12px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.top-bar-list span {
+  padding: 3px;
+}
+
+#right-side-top-bar i {
+  padding: 6px;
+  margin: 0px 0px 0px 8px;
+  background-color: #efefef;
+  border-radius: 6px;
+  font-size: 17px;
+}
+
+input#search {
+  border-radius: 8px;
+  border: 1px solid #bfbfbf;
+  padding-left: 4px;
+}
+
+div#right-side-top-bar {
+  padding: 2px;
+}
+
+#right-side-top-bar i:hover {
+  background-color: var(--form-control-bg);
+  cursor: pointer;
+}
+
+input#search:focus-visible {
+  outline-color: #ababab;
+  outline-width: 1px !important;
+}
+
+i.fa.fa-sort {
+  margin-left: 4px;
+  font-size: 13px;
+}
+
+:host ::ng-deep input#datalistinput {
+  width: 10vw;
+}
+
+:host ::ng-deep .datalist_wrapper {
+  width: 10vw !important;
+}
+
+:host ::ng-deep span#Filter_1 {
+  display: flex;
+  width: 33% !important;
+  justify-content: space-around;
+}
+
+:host ::ng-deep div#filters_wrapper span {
+  display: flex;
+  align-items: center;
+}
+
+:host ::ng-deep div#filters_wrapper {
+  width: 76% !important;
+  max-width: 76% !important;
+}
+
+:host ::ng-deep .top-bar-list span {
+  padding: 1px !important;
+}
+
+:host ::ng-deep span#Filter_2 {
+  width: 26% !important;
+  display: flex;
+  justify-content: space-around;
+}

@@ -1,0 +1,123 @@
+<div class="title_view_list">
+  <h2 *ngIf="Qa.query">Question: {{ Qa.query }}</h2>
+</div>
+<hr class="component_divider" />
+<div class="container body_wrapper">
+  <div style="width: 100%">
+    <div
+      [class]="
+        editFromlist ? 'listing_item_info blob white' : 'listing_item_info'
+      "
+    >
+      <span class="actions_container_listing">
+        <b class="title"
+          >About
+          <div
+            data-title2="About Question Answering allows you to visualize the informations of the Question and The Answer."
+          >
+            <svg
+              disabled=""
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              cursor="help"
+              style="color: #a9abb6"
+            >
+              <path
+                d="M7.82 6a1 1 0 0 1 .99 1.16L8 12h2a1 1 0 1 1 0 2H7.18a1 1 0 0 1-.99-1.16L7 8H6a1 1 0 0 1 0-2h1.82ZM8.5 5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
+                shape-rendering="geometricPrecision"
+              ></path>
+            </svg>
+          </div>
+        </b>
+        <div class="info_actions_wrapper">
+          <button
+            title="Apply Changes"
+            (click)="updateQA()"
+            [disabled]="!formisvalid"
+            *ngIf="editing"
+          >
+            <i class="fa fa-check" aria-hidden="true"></i>
+          </button>
+          <button
+            [title]="editing ? 'Cancel' : 'Edit File'"
+            (click)="editEvent()"
+          >
+            <i
+              aria-hidden="true"
+              [class]="editing ? 'fa fa-times' : 'fa fa-pencil'"
+            ></i>
+          </button>
+        </div>
+      </span>
+      <hr />
+      <form #f="ngForm">
+        <span
+          ><b>Question: </b>
+          <div class="input_wrapper_fl">
+            <span style="padding-left: 2.5%; color: black">{{
+              Qa ? Qa.query : null
+            }}</span>
+          </div>
+        </span>
+        <span
+          ><b>Answer: </b>
+          <div class="input_wrapper_fl">
+            <span style="padding-left: 2.5%; color: black">{{
+              Qa ? Qa.answer : null
+            }}</span>
+          </div>
+        </span>
+        <span
+          ><b>Context: </b>
+          <div class="input_wrapper_fl">
+            <span style="padding-left: 2.5%; display: block; color: black"
+              >{{ firstText }}<mark>{{ Qa.answer }}</mark
+              >{{ lastText }}</span
+            >
+          </div>
+        </span>
+        <span
+          ><b>Score: </b>
+          <div class="input_wrapper_fl">
+            <span style="padding-left: 2.5%; color: black">{{
+              Qa ? Qa.score : null
+            }}</span>
+          </div>
+        </span>
+        <span
+          ><b>Project: </b>
+          <div class="input_wrapper_fl urlProject">
+            <a
+              id="url_project"
+              style="padding-left: 1%"
+              [routerLink]="['/dashboard/project/', Qa.project_id]"
+              >{{ Qa ? Qa.project_name : null }}</a
+            >
+          </div>
+        </span>
+
+        <span [class]="editing ? 'spanEditing' : ''"
+          ><b [class]="editing ? 'editStyle' : ''">Status: </b>
+          <div
+            class="input_wrapper_fl"
+            [style]="!editing ? 'padding-left: 2%;' : null"
+          >
+            <bSwitch
+              name="chosen"
+              [switch-size]="'mini'"
+              [(ngModel)]="QaUpdated.chosen"
+              [disabled]="!editing"
+              [switch-off-text]="'Rejected'"
+              [switch-on-text]="'Accepted'"
+            >
+            </bSwitch>
+          </div>
+        </span>
+      </form>
+    </div>
+    <div class="listing_item_info dates">
+      <small>Created: {{ Qa.Date }} </small>
+    </div>
+  </div>
+</div>

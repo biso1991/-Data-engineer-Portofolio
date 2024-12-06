@@ -1,0 +1,181 @@
+<ul
+  [class]="
+    toggle
+      ? 'navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled'
+      : 'navbar-nav bg-gradient-primary sidebar sidebar-dark accordion'
+  "
+  id="accordionSidebar"
+>
+  <!-- Sidebar  -->
+  <a class="sidebar-brand d-flex align-items-center justify-content-center">
+    <div class="sidebar-brand-icon rotate-n-15">
+      <i class="fas fa-fw fa-tachometer-alt"></i>
+    </div>
+    <div class="sidebar-brand-text mx-3">
+      <!-- -->
+    </div>
+  </a>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider my-0" />
+
+  <!-- Nav Item - Dashboard -->
+  <li [routerLink]="['/dashboard']" class="nav-item">
+    <a class="nav-link">
+      <i class="fas fa-fw fa-tachometer-alt"></i>
+      <span>Home</span></a
+    >
+  </li>
+  <!-- Divider -->
+  <hr class="sidebar-divider d-none d-md-block" />
+  <!-- Heading -->
+  <div class="sidebar-heading">Models</div>
+  <!-- Nav Item -->
+  <li
+    [routerLink]="['/dashboard/model']"
+    (mouseover)="model = true"
+    (mouseout)="model = false"
+    [routerLinkActive]="'active'"
+    [class]="model ? 'nav-item active' : 'nav-item'"
+  >
+    <a [class]="!model ? 'nav-link collapsed' : 'nav-link'">
+      <i class="fas fa-fw fa-file"></i>
+      <span>Models</span>
+    </a>
+    <div [class]="!model ? 'collapse' : 'collapse show'">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">Operations:</h6>
+        <a
+          class="collapse-item"
+          (click)="redirectTo('/dashboard/model', $event)"
+          >List Models</a
+        >
+        <a
+          class="collapse-item"
+          (click)="redirectTo('/dashboard/model/addmodel', $event)"
+          >Add Model</a
+        >
+      </div>
+    </div>
+  </li>
+  <!-- Divider -->
+  <hr class="sidebar-divider" />
+
+  <!-- Heading -->
+  <div class="sidebar-heading">Projects</div>
+
+  <!-- Nav Item -->
+  <li
+    [routerLinkActive]="'active'"
+    [routerLink]="['/dashboard/project']"
+    (mouseover)="project = true"
+    (mouseout)="project = false"
+    [class]="project ? 'nav-item active' : 'nav-item'"
+  >
+    <a [class]="!project ? 'nav-link collapsed' : 'nav-link'">
+      <i class="fas fa-fw fa-folder"></i>
+      <span>Projects</span>
+    </a>
+    <div [class]="!project ? 'collapse' : 'collapse show'">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">Operations:</h6>
+        <a
+          class="collapse-item"
+          (click)="redirectTo('/dashboard/project', $event)"
+          >List Projects</a
+        >
+        <a
+          class="collapse-item"
+          (click)="redirectTo('/dashboard/project/addproject', $event)"
+          >Add Project</a
+        >
+      </div>
+    </div>
+  </li>
+  <!-- Divider -->
+  <hr class="sidebar-divider d-none d-md-block" />
+  <!-- Heading -->
+  <div class="sidebar-heading">Files</div>
+  <!-- Nav Item -->
+  <li
+    [routerLinkActive]="'active'"
+    [routerLink]="['/dashboard/file']"
+    (mouseover)="file = true"
+    (mouseout)="file = false"
+    [class]="file ? 'nav-item active' : 'nav-item'"
+  >
+    <a [class]="!file ? 'nav-link collapsed' : 'nav-link'">
+      <i class="fas fa-fw fa-file"></i>
+      <span>Files</span>
+    </a>
+    <div [class]="!file ? 'collapse' : 'collapse show'">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">Operations:</h6>
+        <a class="collapse-item" (click)="redirectTo('/dashboard/file', $event)"
+          >List Files</a
+        >
+        <a
+          class="collapse-item"
+          (click)="redirectTo('/dashboard/file/addfile', $event)"
+          >Add Files</a
+        >
+      </div>
+    </div>
+  </li>
+  <!-- Divider -->
+  <hr class="sidebar-divider" />
+  <li
+    [routerLinkActive]="'active'"
+    [routerLink]="['/dashboard/question-answering']"
+    class="nav-item"
+  >
+    <a class="nav-link">
+      <i class="fas fa-fw fa-question-circle"></i>
+      <span>Question Answering</span></a
+    >
+  </li>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider d-none d-md-block" />
+
+  <!-- Heading -->
+  <div class="sidebar-heading">Training Job</div>
+  <!-- Nav Item -->
+  <li
+    [routerLinkActive]="'active'"
+    [routerLink]="['/dashboard/training-job']"
+    (mouseover)="trainingJob = true"
+    (mouseout)="trainingJob = false"
+    [class]="trainingJob ? 'nav-item active' : 'nav-item'"
+  >
+    <a [class]="!trainingJob ? 'nav-link collapsed' : 'nav-link'">
+      <i class="fas fa-fw fa-cogs"></i>
+      <span>Training Job</span>
+    </a>
+    <div [class]="!trainingJob ? 'collapse' : 'collapse show'">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">Operations:</h6>
+        <a
+          class="collapse-item"
+          (click)="redirectTo('/dashboard/training-job', $event)"
+          >List Training Job</a
+        >
+        <a
+          class="collapse-item"
+          (click)="
+            redirectTo('/dashboard/training-job/addtraining-job', $event)
+          "
+          >Add Training Job</a
+        >
+      </div>
+    </div>
+  </li>
+  <!-- Sidebar Toggler (Sidebar) -->
+  <div style="margin-top: auto" class="text-center d-none d-md-inline">
+    <button
+      (click)="sidebarToggle()"
+      class="rounded-circle border-0"
+      id="sidebarToggle"
+    ></button>
+  </div>
+</ul>

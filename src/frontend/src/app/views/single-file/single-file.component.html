@@ -1,0 +1,145 @@
+<div class="title_view_list">
+  <h2 *ngIf="file">File: {{ file.file_name }}</h2>
+</div>
+<hr class="component_divider" />
+<div class="container body_wrapper">
+  <!-- INFO TO BE DYNAMIC -->
+  <div style="width: 49%">
+    <div class="listing_item_info">
+      <span class="actions_container_listing">
+        <b class="title"
+          >Preview
+          <div data-title="Preview File allows you to visualize the Document.">
+            <svg
+              disabled=""
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              cursor="help"
+              style="color: #a9abb6"
+            >
+              <path
+                d="M7.82 6a1 1 0 0 1 .99 1.16L8 12h2a1 1 0 1 1 0 2H7.18a1 1 0 0 1-.99-1.16L7 8H6a1 1 0 0 1 0-2h1.82ZM8.5 5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
+                shape-rendering="geometricPrecision"
+              ></path>
+            </svg>
+          </div>
+        </b>
+        <div class="external_Doc">
+          <i
+            (click)="downloadFile()"
+            title="Download"
+            aria-hidden="true"
+            class="fa fa-download"
+          ></i>
+          <!-- <a title="Open In New Tab " style=" color: inherit; " rel="noopener" target="_blank"
+                        [href]="file ? file.file_f : null"><i class="fa fa-external-link-square"
+                            aria-hidden="true"></i></a> -->
+        </div>
+      </span>
+      <hr />
+      <!-- https://www.w3.org/TR/PNG/iso_8859-1.txt -->
+      <!-- https://www.orimi.com/pdf-test.pdf -->
+      <!-- https://filesamples.com/samples/document/docx/sample3.docx -->
+      <ngx-doc-viewer
+        [url]="file.file_f"
+        viewer="google"
+        style="width: 100%; height: 50vh"
+      >
+      </ngx-doc-viewer>
+    </div>
+  </div>
+  <div style="width: 49%">
+    <div
+      [class]="
+        editFromlist ? 'listing_item_info blob white' : 'listing_item_info'
+      "
+    >
+      <span class="actions_container_listing">
+        <b class="title"
+          >About
+          <div
+            data-title2="About File allows you to visualize the informations of the File and you can update project."
+          >
+            <svg
+              disabled=""
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              cursor="help"
+              style="color: #a9abb6"
+            >
+              <path
+                d="M7.82 6a1 1 0 0 1 .99 1.16L8 12h2a1 1 0 1 1 0 2H7.18a1 1 0 0 1-.99-1.16L7 8H6a1 1 0 0 1 0-2h1.82ZM8.5 5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
+                shape-rendering="geometricPrecision"
+              ></path>
+            </svg>
+          </div>
+        </b>
+        <div class="info_actions_wrapper">
+          <button
+            title="Apply Changes"
+            (click)="updateFile()"
+            [disabled]="!formisvalid"
+            *ngIf="editing"
+          >
+            <i class="fa fa-check" aria-hidden="true"></i>
+          </button>
+          <button
+            [title]="editing ? 'Cancel' : 'Edit File'"
+            (click)="editEvent()"
+          >
+            <i
+              aria-hidden="true"
+              [class]="editing ? 'fa fa-times' : 'fa fa-pencil'"
+            ></i>
+          </button>
+        </div>
+      </span>
+      <hr />
+      <form #f="ngForm">
+        <span
+          ><b>Name: </b>
+          <div class="input_wrapper_fl">
+            <span style="padding-left: 2.5%">{{
+              file ? file.file_name : null
+            }}</span>
+          </div>
+        </span>
+        <span
+          ><b>Size: </b>
+          <div class="input_wrapper_fl">
+            <span style="padding-left: 2.5%">{{
+              file ? parseFileSize(file.file_size) : null
+            }}</span>
+          </div>
+        </span>
+
+        <span [class]="editing ? 'spanEditing' : ''"
+          ><b [class]="editing ? 'editStyle' : ''">Project: </b>
+          <div class="input_wrapper_fl">
+            <app-datalist
+              [optionsList]="{ list: projects, search: searchedProject }"
+              [Isediting]="editing"
+              [selectedItem]="selectedProject"
+              [name]="'name'"
+              [entity]="'Project'"
+              (scrollBottom)="displayMore($event)"
+              (search)="searchProject($event)"
+              (Select)="onChangedatalist($event, f)"
+              (errorE)="verify(f, $event)"
+              [link]="'/dashboard/project/'"
+            >
+            </app-datalist>
+          </div>
+        </span>
+      </form>
+    </div>
+    <div class="listing_item_info dates">
+      <small
+        >Created: {{ file.create_date }} | Updated:
+        {{ file.update_date }}</small
+      >
+    </div>
+  </div>
+</div>

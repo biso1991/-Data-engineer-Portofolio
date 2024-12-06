@@ -1,0 +1,205 @@
+<div class="title_view_list">
+  <h2 *ngIf="monitoring && monitoring.create_date">
+    Monitoring Training of:
+    {{ monitoring ? transformDate(monitoring.create_date) : '' }}
+  </h2>
+</div>
+<hr class="component_divider" />
+<div class="container body_wrapper">
+  <div style="width: 100%">
+    <div class="listing_item_info">
+      <span class="actions_container_listing">
+        <b class="title"
+          >Monitoring Ressources
+          <div
+            data-title="From this tab you can monitor the usage of cpu , ram."
+          >
+            <svg
+              disabled=""
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              cursor="help"
+              style="color: #a9abb6"
+            >
+              <path
+                d="M7.82 6a1 1 0 0 1 .99 1.16L8 12h2a1 1 0 1 1 0 2H7.18a1 1 0 0 1-.99-1.16L7 8H6a1 1 0 0 1 0-2h1.82ZM8.5 5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
+                shape-rendering="geometricPrecision"
+              ></path>
+            </svg></div
+        ></b>
+        <div class="info_actions_wrapper">
+          <div
+            *ngIf="TrainingJob && TrainingJob.status === status.status.idle"
+            [title]="status.status[TrainingJob.status].toUpperCase()"
+            class="training_job_status idle"
+          ></div>
+
+          <div
+            *ngIf="TrainingJob && TrainingJob.status === status.status.running"
+            [title]="status.status[TrainingJob.status].toUpperCase()"
+            class="training_job_status running animated"
+          ></div>
+
+          <div
+            *ngIf="TrainingJob && TrainingJob.status === status.status.finished"
+            [title]="status.status[TrainingJob.status].toUpperCase()"
+            class="training_job_status finished"
+          ></div>
+
+          <div
+            *ngIf="TrainingJob && TrainingJob.status === status.status.aborted"
+            [title]="status.status[TrainingJob.status].toUpperCase()"
+            class="training_job_status aborted"
+          ></div>
+
+          <div
+            *ngIf="TrainingJob && TrainingJob.status === status.status.failed"
+            [title]="status.status[TrainingJob.status].toUpperCase()"
+            class="training_job_status failed"
+          ></div>
+        </div>
+      </span>
+      <hr />
+      <div class="monitoring_cpu_ram">
+        <div class="single_monitoring">
+          <mgx-circular-progress-pie
+            id="pie"
+            [percentage]="monitoring ? monitoring.cpu_utilization : 0"
+            color="#24c3c0"
+          >
+          </mgx-circular-progress-pie>
+          <span class="text_monitoring">CPU USAGE</span>
+        </div>
+        <div class="single_monitoring">
+          <mgx-circular-progress-pie
+            id="pie"
+            [percentage]="monitoring ? monitoring.memory_utilization : 0"
+            color="#24c3c0"
+          >
+          </mgx-circular-progress-pie>
+          <span class="text_monitoring">MEMORY USAGE</span>
+          <span>{{
+            transformPercent(
+              monitoring ? monitoring.memory_utilization_size : 0
+            ) + 'GB'
+          }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container body_wrapper" style="margin-top: 1%; margin-bottom: 4%">
+  <div style="width: 49%">
+    <div class="listing_item_info">
+      <span class="actions_container_listing">
+        <b class="title"
+          >Metrics
+          <div
+            data-title="From this Tab you can monitor the evaluation metrics"
+          >
+            <svg
+              disabled=""
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              cursor="help"
+              style="color: #a9abb6"
+            >
+              <path
+                d="M7.82 6a1 1 0 0 1 .99 1.16L8 12h2a1 1 0 1 1 0 2H7.18a1 1 0 0 1-.99-1.16L7 8H6a1 1 0 0 1 0-2h1.82ZM8.5 5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
+                shape-rendering="geometricPrecision"
+              ></path>
+            </svg>
+          </div>
+        </b>
+      </span>
+      <hr />
+      <form #f="ngForm">
+        <span
+          ><b>Learning Loop: </b>
+          <div class="input_wrapper_fl">
+            <span style="padding-left: 2.5%">{{
+              monitoring ? monitoring.loop_count : 0
+            }}</span>
+          </div>
+        </span>
+        <span
+          ><b>Validation Accuracy: </b>
+          <div class="input_wrapper_fl">
+            <span style="padding-left: 2.5%">{{
+              monitoring ? transformPercent(monitoring.validation_accuracy) : 0
+            }}</span>
+          </div>
+        </span>
+        <span
+          ><b>Training Accuracy: </b>
+          <div class="input_wrapper_fl">
+            <span style="padding-left: 2.5%">{{
+              monitoring ? transformPercent(monitoring.training_accuracy) : 0
+            }}</span>
+          </div>
+        </span>
+        <span
+          ><b>Precision: </b>
+          <div class="input_wrapper_fl">
+            <span style="padding-left: 2.5%">{{
+              monitoring ? transformPercent(monitoring.precision) : 0
+            }}</span>
+          </div>
+        </span>
+        <span
+          ><b>F1 score: </b>
+          <div class="input_wrapper_fl">
+            <span style="padding-left: 2.5%">{{
+              monitoring ? transformPercent(monitoring.f1_score) : 0
+            }}</span>
+          </div>
+        </span>
+        <span
+          ><b>Recall: </b>
+          <div class="input_wrapper_fl">
+            <span style="padding-left: 2.5%">{{
+              monitoring ? transformPercent(monitoring.recall) : 0
+            }}</span>
+          </div>
+        </span>
+        <span
+          ><b>Similarity Score: </b>
+          <div class="input_wrapper_fl">
+            <span style="padding-left: 2.5%">{{
+              monitoring ? transformPercent(monitoring.sas) : 0
+            }}</span>
+          </div>
+        </span>
+      </form>
+    </div>
+  </div>
+  <div style="width: 49%">
+    <div class="listing_item_info">
+      <span class="actions_container_listing">
+        <b class="title"
+          >Chart
+          <div data-title="From this Tab you can monitor The chart Live">
+            <svg
+              disabled=""
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              cursor="help"
+              style="color: #a9abb6"
+            >
+              <path
+                d="M7.82 6a1 1 0 0 1 .99 1.16L8 12h2a1 1 0 1 1 0 2H7.18a1 1 0 0 1-.99-1.16L7 8H6a1 1 0 0 1 0-2h1.82ZM8.5 5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
+                shape-rendering="geometricPrecision"
+              ></path>
+            </svg>
+          </div>
+        </b>
+      </span>
+      <hr />
+      <canvas id="my-chart"> </canvas>
+    </div>
+  </div>
+</div>

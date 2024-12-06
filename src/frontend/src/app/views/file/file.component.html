@@ -1,0 +1,88 @@
+<div class="title_view_list">
+  <div class="container-md-height m-b-20">
+    <div class="row m-lg-0">
+      <div class="col-xl-7 col-lg-6">
+        <div class="full-height">
+          <div class="card-body text-center">
+            <img
+              class="image-responsive-height demo-mw-500"
+              src="/assets/img/file-image.png"
+              alt=""
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-5 col-lg-6">
+        <div class="card card-transparent">
+          <div class="card-header">
+            <div class="card-title">Your Files</div>
+          </div>
+          <div class="card-body">
+            <h3>Your Files</h3>
+            <p>From this page, you can Access, View and Delete Files !</p>
+            <br />
+            <span
+              [routerLink]="['/dashboard/file/addfile']"
+              class="add_button blob button"
+              ><i
+                class="fa fa-plus"
+                aria-hidden="true"
+                style="margin-right: 9px"
+              ></i
+              >Create a new File</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr />
+<div class="container">
+  <app-list-items
+    [entityName]="'File'"
+    [countP]="count"
+    [listItem]="FileListToDisplay"
+    [structurelist]="structure"
+    (search)="setSearchTerm($event)"
+    (ordering)="orderList($event)"
+    (setPageE)="setPage($event)"
+    [ActionListD]="listActions"
+    (delete)="showHideModal($event)"
+    (PageSize)="changePageSize($event)"
+    [FilterItem1]="{
+      list: listProjects,
+      key: 'name',
+      filter_name_model: 'Project',
+      preposition: 'of',
+      type: true,
+      error: false,
+      searchedItems: searchedProject
+    }"
+    [SelectedFilter1]="selectedProject"
+    (displayMoreEv)="displayMore($event)"
+    (searchFilter)="searchProject($event)"
+    (filterSelect)="onChangedatalist($event)"
+    (Filter1)="onChangedatalist($event)"
+    [FilterItem2]="{
+      list: [{ name: 'pdf' }, { name: 'docx' }, { name: 'txt' }],
+      key: 'name',
+      filter_name_model: 'Ext'
+    }"
+    (Filter2)="filter2Change($event)"
+    [Filter1FromParent]="filterProjectId"
+    (edit)="editFile($event)"
+  >
+  </app-list-items>
+  <app-delete-modal
+    *ngIf="deleteModal"
+    [entityName]="'File'"
+    [itemsToRemove]="itemToRemove"
+    (close)="showHideModal()"
+    [entityNameKeyP]="'file_name'"
+    [EntityToRemove]="fileRemove"
+    (delete)="DeleteFile($event)"
+    [SimpleModal]="true"
+  >
+  </app-delete-modal>
+</div>

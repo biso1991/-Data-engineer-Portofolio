@@ -1,0 +1,232 @@
+<div class="title_view_list">
+  <div class="container-md-height m-b-20">
+    <div class="row m-lg-0">
+      <div class="col-xl-7 col-lg-6">
+        <div class="full-height">
+          <div class="card-body text-center">
+            <img
+              class="image-responsive-height demo-mw-500"
+              src="/assets/img/training-job-image.png"
+              alt=""
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-5 col-lg-6">
+        <div class="card card-transparent">
+          <div class="card-header">
+            <div class="card-title">
+              Add Training Job
+              {{ selectedProject ? 'For ' + selectedProject.name : '' }}
+            </div>
+          </div>
+          <div class="card-body">
+            <h3>
+              Create A New Training Job
+              {{ selectedProject ? 'For ' + selectedProject.name : '' }}
+            </h3>
+            <p>From this page, you can create a new Training Job</p>
+            <b>* Indicates a required field.</b>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr class="component_divider" />
+<div class="container body_wrapper">
+  <div
+    class="add_wrapper"
+    [class]="selectedProject ? 'blob white' : ''"
+    style="position: relative"
+  >
+    <div class="info_actions_wrapper">
+      <div>
+        <button (click)="addTrainingJob()" [disabled]="!formisvalid">
+          <i class="fa fa-check" aria-hidden="true"></i>
+          Save
+        </button>
+        <button [routerLink]="['/dashboard/training-job']">
+          <i aria-hidden="true" class="fa fa-times"></i> Cancel
+        </button>
+      </div>
+    </div>
+
+    <form #f="ngForm">
+      <div class="single_input">
+        <b>Training Job Name *: </b>
+        <div class="input_wrapper_fl">
+          <input
+            (keydown.space)="!TrainingJob.name ? $event.preventDefault() : ''"
+            class="form-control"
+            (ngModelChange)="verify(f)"
+            name="name"
+            id="name"
+            [(ngModel)]="TrainingJob.name"
+            #name="ngModel"
+            type="text"
+            minlength="3"
+            maxlength="50"
+            placeholder="Enter Training Job Name"
+            [class.is-invalid]="name.invalid && name.touched"
+            required
+          />
+          <div *ngIf="name.invalid && name.touched" class="alert alert-danger">
+            <div *ngIf="name.errors?.['minlength']">
+              <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Name minimum 3
+              characters
+            </div>
+            <div *ngIf="name.errors?.['required']">
+              <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Name is
+              required
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="single_input">
+        <b>Project *: </b>
+        <div class="input_wrapper_fl">
+          <app-datalist
+            [optionsList]="{ list: projects, search: searchedProject }"
+            [Isediting]="isEditing"
+            [name]="'name'"
+            [entity]="'Project'"
+            (Select)="onChangedatalist($event, f)"
+            [selectedItem]="selectedProject"
+            (errorE)="verify(f, $event)"
+            (scrollBottom)="displayMore($event)"
+            (search)="searchProject($event)"
+          >
+          </app-datalist>
+        </div>
+      </div>
+
+      <div class="single_input">
+        <b>Gpu Batch Size : </b>
+        <div class="input_wrapper_fl">
+          <input
+            [class.is-invalid]="
+              per_gpu_batch_size.invalid && per_gpu_batch_size.touched
+            "
+            (keydown.space)="
+              !TrainingJob.per_gpu_batch_size ? $event.preventDefault() : ''
+            "
+            type="number"
+            class="form-control"
+            placeholder="Enter Gpu Batch Size (Default: 4)"
+            (ngModelChange)="verify(f)"
+            name="per_gpu_batch_size"
+            id="per_gpu_batch_size"
+            [(ngModel)]="TrainingJob.per_gpu_batch_size"
+            #per_gpu_batch_size="ngModel"
+            min="2"
+            value="TrainingJob.per_gpu_batch_size"
+          />
+          <div
+            *ngIf="per_gpu_batch_size.invalid && per_gpu_batch_size.touched"
+            class="alert alert-danger"
+          >
+            <div *ngIf="per_gpu_batch_size.errors?.['min']">
+              <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Gpu Batch Size
+              minimum 2
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="single_input">
+        <b>Learning Rate : </b>
+        <div class="input_wrapper_fl">
+          <input
+            [class.is-invalid]="learning_rate.invalid && learning_rate.touched"
+            (keydown.space)="
+              !TrainingJob.learning_rate ? $event.preventDefault() : ''
+            "
+            type="number"
+            class="form-control"
+            placeholder="Enter Learning Rate (Default: 0.1)"
+            (ngModelChange)="verify(f)"
+            name="learning_rate"
+            id="learning_rate"
+            [(ngModel)]="TrainingJob.learning_rate"
+            #learning_rate="ngModel"
+            min="0.1"
+            value="TrainingJob.learning_rate"
+          />
+          <div
+            *ngIf="learning_rate.invalid && learning_rate.touched"
+            class="alert alert-danger"
+          >
+            <div *ngIf="learning_rate.errors?.['min']">
+              <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Learning Rate
+              minimum 0.1
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="single_input">
+        <b>Warmup Steps : </b>
+        <div class="input_wrapper_fl">
+          <input
+            [class.is-invalid]="warmup_steps.invalid && warmup_steps.touched"
+            (keydown.space)="
+              !TrainingJob.warmup_steps ? $event.preventDefault() : ''
+            "
+            type="number"
+            class="form-control"
+            placeholder="Enter Warmup Steps (Default: 1) "
+            (ngModelChange)="verify(f)"
+            name="warmup_steps"
+            id="warmup_steps"
+            [(ngModel)]="TrainingJob.warmup_steps"
+            #warmup_steps="ngModel"
+            min="1"
+            value="TrainingJob.warmup_steps"
+          />
+          <div
+            *ngIf="warmup_steps.invalid && warmup_steps.touched"
+            class="alert alert-danger"
+          >
+            <div *ngIf="warmup_steps.errors?.['min']">
+              <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Warmup Steps
+              minimum 1
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="single_input">
+        <b>Num Epochs : </b>
+        <div class="input_wrapper_fl">
+          <input
+            [class.is-invalid]="num_epochs.invalid && num_epochs.touched"
+            (keydown.space)="
+              !TrainingJob.num_epochs ? $event.preventDefault() : ''
+            "
+            type="number"
+            class="form-control"
+            placeholder="Enter Num Epochs (Default: 5) "
+            (ngModelChange)="verify(f)"
+            name="num_epochs"
+            id="num_epochs"
+            [(ngModel)]="TrainingJob.num_epochs"
+            #num_epochs="ngModel"
+            min="5"
+            value="TrainingJob.num_epochs"
+          />
+          <div
+            *ngIf="num_epochs.invalid && num_epochs.touched"
+            class="alert alert-danger"
+          >
+            <div *ngIf="num_epochs.errors?.['min']">
+              <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Num Epochs
+              minimum 5
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

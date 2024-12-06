@@ -1,0 +1,350 @@
+<div class="title_view_list">
+  <div class="container-md-height m-b-20">
+    <div class="row m-lg-0">
+      <div class="col-xl-7 col-lg-6">
+        <div class="full-height">
+          <div class="card-body text-center">
+            <img
+              class="image-responsive-height demo-mw-500"
+              src="/assets/img/project_image.png"
+              alt=""
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-5 col-lg-6">
+        <div class="card card-transparent">
+          <div class="card-header">
+            <div class="card-title">
+              Add Project
+              {{
+                selectedModel ? 'With [' + selectedModel.model_name + ']' : ''
+              }}
+            </div>
+          </div>
+          <div class="card-body">
+            <h3>
+              Create A New Project
+              {{
+                selectedModel ? 'With [' + selectedModel.model_name + ']' : ''
+              }}
+            </h3>
+            <p>From this page, you can create a new project</p>
+            <b>* Indicates a required field.</b>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr class="component_divider" />
+<div class="container body_wrapper">
+  <div class="add_wrapper" [class]="selectedModel ? 'blob white' : ''">
+    <div class="info_actions_wrapper">
+      <div>
+        <button (click)="addProject()" [disabled]="!formisvalid">
+          <i class="fa fa-check" aria-hidden="true"></i>
+          Save
+        </button>
+        <button [routerLink]="['/dashboard/project']">
+          <i aria-hidden="true" class="fa fa-times"></i> Cancel
+        </button>
+      </div>
+    </div>
+    <form #f="ngForm">
+      <span
+        ><b>Project Name *: </b>
+        <div class="input_wrapper_fl">
+          <input
+            (keydown.space)="!project.name ? $event.preventDefault() : ''"
+            class="form-control"
+            (ngModelChange)="verify(f)"
+            name="name"
+            id="name"
+            [(ngModel)]="project.name"
+            #name="ngModel"
+            type="text"
+            minlength="3"
+            maxlength="50"
+            placeholder="Enter Project Name"
+            required
+          />
+          <div *ngIf="name.invalid && name.touched" class="alert alert-danger">
+            <div *ngIf="name.errors?.['minlength']">
+              <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Name minimum 3
+              characters
+            </div>
+            <div *ngIf="name.errors?.['required']">
+              <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Name is
+              required
+            </div>
+          </div>
+        </div>
+      </span>
+      <span>
+        <b>Description *: </b>
+        <div class="input_wrapper_fl">
+          <textarea
+            (keydown.space)="
+              !project.description ? $event.preventDefault() : ''
+            "
+            class="form-control"
+            (ngModelChange)="verify(f)"
+            name="description"
+            id="description"
+            [(ngModel)]="project.description"
+            placeholder="Enter Project Description"
+            #description="ngModel"
+            maxlength="300"
+            required
+          ></textarea>
+          <div
+            *ngIf="description.invalid && description.touched"
+            class="alert alert-danger"
+          >
+            <div *ngIf="description.errors?.['maxlength']">
+              <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Description
+              maximum 300 characters
+            </div>
+            <div *ngIf="description.errors?.['required']">
+              <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Description is
+              required
+            </div>
+          </div>
+        </div>
+      </span>
+
+      <span
+        ><b>Retreiver *: </b>
+        <div class="input_wrapper_fl">
+          <input
+            (keydown.space)="
+              !project.retreiver_count ? $event.preventDefault() : ''
+            "
+            type="number"
+            class="form-control"
+            placeholder="Enter Documents Count"
+            [(ngModel)]="project.retreiver_count"
+            (ngModelChange)="verify(f)"
+            name="retreiver_count"
+            id="retreiver_count"
+            #retreiver_count="ngModel"
+            min="5"
+            value="project.retreiver_count"
+            required
+          />
+          <div
+            *ngIf="retreiver_count.invalid && retreiver_count.touched"
+            class="alert alert-danger"
+          >
+            <div *ngIf="retreiver_count.errors?.['min']">
+              <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Retreiver
+              minimum 5
+            </div>
+            <div *ngIf="retreiver_count.errors?.['required']">
+              <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Retreiver is
+              required
+            </div>
+          </div>
+        </div>
+      </span>
+
+      <span
+        ><b>Reader *: </b>
+        <div class="input_wrapper_fl">
+          <input
+            (keydown.space)="
+              !project.reader_count ? $event.preventDefault() : ''
+            "
+            type="number"
+            class="form-control"
+            placeholder="Enter Split Count"
+            [(ngModel)]="project.reader_count"
+            (ngModelChange)="verify(f)"
+            name="reader_count"
+            id="reader_count"
+            #reader_count="ngModel"
+            min="5"
+            value="project.reader_count"
+            required
+          />
+
+          <div
+            *ngIf="(reader_count.invalid && reader_count.touched) || errorMSG"
+            class="alert alert-danger"
+          >
+            <div *ngIf="reader_count.errors?.['min']">
+              <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Reader minimum
+              5
+            </div>
+            <div *ngIf="reader_count.errors?.['required']">
+              <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Reader is
+              required
+            </div>
+            <div *ngIf="errorMSG">
+              <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> {{ errorMSG }}
+            </div>
+          </div>
+        </div>
+      </span>
+      <div class="single_input">
+        <b>Preprocessing Options *: </b>
+        <div class="input_wrapper_fl">
+          <select
+            #select
+            id="preprocessing_options"
+            (change)="changeSelect($any($event.target).value, f, select)"
+            class="form-control customselect"
+            required
+          >
+            <option value="" [selected]="!project.preprocessing_options">
+              Select Preprocessing Options
+            </option>
+            <option
+              [selected]="
+                project.preprocessing_options &&
+                project.preprocessing_options === option
+              "
+              *ngFor="let option of preprocessingOptions; let i = index"
+              [value]="i"
+            >
+              {{ option | titlecase }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div
+        class="single_input"
+        *ngIf="
+          project.preprocessing_options !== null &&
+          getIndex(project.preprocessing_options) === 0
+        "
+      >
+        <b>Split Overlap : </b>
+        <div class="input_wrapper_fl">
+          <input
+            [class.is-invalid]="split_overlap.invalid && split_overlap.touched"
+            (keydown.space)="
+              !project.split_overlap ? $event.preventDefault() : ''
+            "
+            type="number"
+            class="form-control"
+            placeholder="Enter Split Overlap (Default: 5)"
+            (ngModelChange)="verify(f)"
+            name="split_overlap"
+            id="split_overlap"
+            [(ngModel)]="project.split_overlap"
+            #split_overlap="ngModel"
+            min="1"
+            value="project.split_overlap"
+          />
+          <div
+            *ngIf="split_overlap.invalid && split_overlap.touched"
+            class="alert alert-danger"
+          >
+            <div *ngIf="split_overlap.errors?.['min']">
+              <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Split Overlap
+              minimum 1
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="single_input"
+        *ngIf="
+          project.preprocessing_options !== null &&
+          getIndex(project.preprocessing_options) === 0
+        "
+      >
+        <b>Split Length : </b>
+        <div class="input_wrapper_fl">
+          <input
+            [class.is-invalid]="split_length.invalid && split_length.touched"
+            (keydown.space)="
+              !project.split_length ? $event.preventDefault() : ''
+            "
+            type="number"
+            class="form-control"
+            placeholder="Enter Split Length (Default: 10)"
+            (ngModelChange)="verify(f)"
+            name="split_length"
+            id="split_length"
+            [(ngModel)]="project.split_length"
+            #split_length="ngModel"
+            min="1"
+            value="project.split_length"
+          />
+          <div
+            *ngIf="split_length.invalid && split_length.touched"
+            class="alert alert-danger"
+          >
+            <div *ngIf="split_length.errors?.['min']">
+              <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Split Overlap
+              minimum 1
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="single_input">
+        <b title="Determines what unit the document is split by."
+          >Split by *:
+        </b>
+        <div class="input_wrapper_fl">
+          <select
+            #select1
+            id="split_by"
+            (change)="changeSelect($any($event.target).value, f, select1)"
+            class="form-control customselect"
+            required
+          >
+            <option value="" [selected]="!project.split_by">
+              Select Split By
+            </option>
+            <option
+              [selected]="project.split_by && project.split_by === option"
+              *ngFor="let option of splitBy; let i = index"
+              [value]="i"
+            >
+              {{ option | titlecase }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div
+        *ngIf="project.split_by && project.split_by === splitBy[0]"
+        class="single_input"
+      >
+        <b>Respect Sentence Boundary *: </b>
+        <div class="input_wrapper_fl">
+          <bSwitch
+            [disabled]="!project.split_by || project.split_by !== splitBy[0]"
+            name="split_respect_sentence_boundary"
+            [switch-size]="'mini'"
+            [(ngModel)]="project.split_respect_sentence_boundary"
+          >
+          </bSwitch>
+        </div>
+      </div>
+      <span
+        ><b>Model *: </b>
+        <div class="input_wrapper_fl">
+          <app-datalist
+            [optionsList]="{ list: modellist, search: searchedModel }"
+            [Isediting]="isEditing"
+            [name]="'model_name'"
+            [entity]="'Model'"
+            (Select)="onChangedatalist($event)"
+            [selectedItem]="selectedModel"
+            (errorE)="verify(f, $event)"
+            (scrollBottom)="displayMore($event)"
+            (search)="searchModel($event)"
+          >
+          </app-datalist>
+        </div>
+      </span>
+    </form>
+  </div>
+</div>

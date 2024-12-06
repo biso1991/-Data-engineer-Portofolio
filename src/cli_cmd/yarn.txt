@@ -1,0 +1,29 @@
+genaral command 
+Usage: yarn [SHELL_OPTIONS] COMMAND [GENERIC_OPTIONS] [SUB_COMMAND] [COMMAND_OPTIONS]
+#######################################################################################################
+application or app
+Usage: yarn application [options] Usage: yarn app [options]
+#######################################################################################################
+applicationattempt
+Usage: yarn applicationattempt [options]
+#######################################################################################################
+classpath
+Usage: yarn classpath [--glob |--jar <path> |-h |--help]
+#######################################################################################################
+jar
+Usage: yarn jar <jar> [mainClass] args...
+description:
+Runs a jar file. Users can bundle their YARN code in a jar file and execute it using this command.
+#######################################################################################################
+logs
+Usage: yarn logs -applicationId <application ID> [options]
+#######################################################################################################
+node
+Usage: yarn node [options]
+#######################################################################################################
+envvars
+Usage: yarn envvars
+description:
+Display computed Hadoop environment variables.
+#######################################################################################################
+

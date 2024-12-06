@@ -1,0 +1,18 @@
+/* stylelint-disable selector-pseudo-element-no-unknown */
+/* stylelint-disable scss/double-slash-comment-empty-line-before */
+@use '../../../palette' as *;
+
+#wrapper {
+  display: flex;
+  height: 100%;
+}
+
+#wrapper #content-wrapper {
+  background-color: var(--wrapper-color-bg);
+  width: 100%;
+  // overflow-x: hidden;
+}
+
+#wrapper #content-wrapper #content {
+  flex: 1 0 auto;
+}

@@ -1,0 +1,112 @@
+<div style="position: absolute">
+  <div class="modal_container_ubiai">
+    <div class="modal_overlay modal_overlay_2">
+      <button (click)="closeModal()" class="modal____SClose">
+        <svg
+          disabled=""
+          class="modal____SClose_icon_div"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          data-name="Close"
+          data-group="l"
+          title="Close"
+        >
+          <path
+            d="M20.707 4.707a1 1 0 0 0-1.414-1.414L12 10.586 4.707 3.293a1 1 0 0 0-1.414 1.414L10.586 12l-7.293 7.293a1 1 0 1 0 1.414 1.414L12 13.414l7.293 7.293a1 1 0 0 0 1.414-1.414L13.414 12l7.293-7.293Z"
+            shape-rendering="geometricPrecision"
+          ></path>
+        </svg>
+      </button>
+      <h2
+        class="modal____body_center modal____body_center_desktop"
+        font-weight="600"
+        style="margin-bottom: 20px"
+      >
+        Delete {{ entityNamee }} ?
+      </h2>
+      <p
+        class="modal____body_text"
+        data-ui-name="Flex"
+        style="margin-bottom: 16px; flex-wrap: wrap; column-gap: 4px"
+      >
+        This will <b>delete</b> the following {{ entityNamee }}
+        <span
+          class="modal____body_center modal____body_text_nowrap modal____body_text_bold"
+          data-ui-name="Text"
+          >{{ entity[entityNameKey] }}</span
+        >
+        with all data:
+      </p>
+      <ul
+        class="modal____body_text"
+        style="
+          max-height: 205px;
+          margin-top: 16px;
+          margin-bottom: 20px;
+          padding: 0%;
+          flex-flow: column wrap;
+          gap: 8px;
+        "
+      >
+        <li
+          *ngFor="let item of itemsToDelete"
+          class="modal____body_center modal____body_text_2 modal____body_text_nowrap"
+        >
+          <span class="modal____body_center modal____body_text_2">{{
+            item
+          }}</span>
+        </li>
+      </ul>
+      <div
+        *ngIf="!simple"
+        class="modal____body_text_danger modal____body_text_danger_2 modal____body_text_danger_3"
+        style="margin-top: 20px; margin-bottom: 28px"
+      >
+        <div class="modal____body_text_danger_4">
+          <label
+            class="modal____body_text"
+            style="min-width: 0%; margin-bottom: 12px; flex-wrap: wrap"
+            ><span
+              class="modal____body_center modal____body_text_2"
+              style="margin-right: 4px"
+              >Confirm deletion by typing the {{ entityNamee }} name</span
+            >
+            <span
+              class="modal____body_center modal____body_text_2 modal____body_text_nowrap modal____body_text_bold modal____body_text_danger_5"
+              >{{ entity[entityNameKey] }}</span
+            ></label
+          >
+          <div style="width: 100%">
+            <div
+              class="modal____body_text_input modal____body_text_input_size modal____body_text_input_color"
+            >
+              <input
+                #nameEn="ngModel"
+                [class.is-invalid]="disabled && nameEn.touched"
+                [(ngModel)]="nameForRemove"
+                (ngModelChange)="Verify()"
+                class="modal____body_text_input_color_advanced modal____body_text_input_size"
+                type="text"
+                autocomplete="off"
+                [placeholder]="'Enter ' + entityNamee + ' name'"
+                name="name"
+                value=""
+              />
+              <div class="modal____body_text_input_color_shadow"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button
+        (click)="DeleteItem()"
+        [disabled]="disabled"
+        class="button_modal delete"
+      >
+        Delete</button
+      ><button (click)="closeModal()" class="button_modal cancel">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>

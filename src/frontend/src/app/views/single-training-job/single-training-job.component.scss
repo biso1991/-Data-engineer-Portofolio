@@ -1,0 +1,390 @@
+/* stylelint-disable selector-pseudo-element-no-unknown */
+/* stylelint-disable property-no-vendor-prefix */
+/* stylelint-disable shorthand-property-no-redundant-values */
+/* stylelint-disable alpha-value-notation */
+/* stylelint-disable color-function-notation */
+/* stylelint-disable rule-empty-line-before */
+/* stylelint-disable selector-pseudo-element-colon-notation */
+/* stylelint-disable font-family-no-missing-generic-family-keyword */
+/* stylelint-disable font-family-name-quotes */
+/* stylelint-disable length-zero-no-unit */
+/* stylelint-disable no-descending-specificity */
+/* stylelint-disable value-no-vendor-prefix */
+/* stylelint-disable declaration-block-no-redundant-longhand-properties */
+/* stylelint-disable selector-class-pattern */
+@use '../../../palette' as *;
+
+[data-title]:hover::before {
+  content: attr(data-title);
+  position: absolute;
+  display: inline-block;
+  padding: 3px 6px;
+  border-radius: 4px;
+  width: 222px;
+  background: white;
+  color: var(--password-color-button);
+  font-size: 12px;
+  font-weight: 500;
+  font-family: Montserrat, sans-serif;
+  left: 9%;
+  top: 18%;
+  z-index: 99999;
+  box-shadow: 3px 4px 15px 1px #00000024;
+}
+
+[data-title2]:hover::before {
+  content: attr(data-title2);
+  position: absolute;
+  display: inline-block;
+  padding: 3px 6px;
+  border-radius: 4px;
+  width: 222px;
+  background: white;
+  color: var(--password-color-button);
+  font-size: 12px;
+  font-weight: 500;
+  font-family: Montserrat, sans-serif;
+  left: 9%;
+  top: 5.5vh;
+  z-index: 99999;
+  box-shadow: 3px 4px 15px 1px #00000024;
+}
+
+.input_wrapper_fl.datalist_container {
+  padding-left: 11px;
+}
+
+.title_view_list {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+  align-items: center;
+  width: 99%;
+  margin: auto;
+}
+
+.container.body_wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+// INFO COMPONENT
+.listing_item_info {
+  display: flex;
+  flex-direction: column;
+  background: #e0e1e980;
+  border-radius: 7px;
+  padding: 19px;
+  position: relative;
+}
+
+.listing_item_info span,
+p {
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.listing_item_info hr {
+  margin: 0px 0px 19px 0px;
+}
+
+.listing_item_info b {
+  color: var(--password-color-button);
+  font-size: 16px;
+}
+
+.info_actions_wrapper {
+  width: fit-content;
+  display: flex;
+}
+
+span.actions_container_listing {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.info_actions_wrapper button {
+  background: #d1d1d1ab;
+  border-radius: 6px;
+  padding: 5px 13px !important;
+  margin-right: 5px;
+  outline: transparent;
+  border: none;
+}
+
+.input_wrapper_fl {
+  width: 83%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-content: center;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+button:disabled {
+  pointer-events: none;
+  background: var(--form-control-bg) !important;
+}
+
+button:disabled > i {
+  color: #b1b1b1 !important;
+}
+
+app-datalist {
+  width: 100%;
+}
+
+.input_true {
+  height: 26px;
+  width: -webkit-fill-available;
+  margin-left: 9px;
+  border-radius: 5px;
+  border: 1px solid #52525278;
+  color: var(--password-color-button);
+  max-width: 475px;
+}
+
+textarea.input_true {
+  height: 77px;
+}
+
+.info_actions_wrapper button i {
+  font-size: 14px;
+  color: var(--password-color-button);
+}
+
+.info_actions_wrapper button:hover {
+  background-color: #bdbdbd !important;
+  cursor: pointer;
+}
+
+.listing_item_info.dates {
+  padding: 8px;
+  margin-top: 4px;
+  text-align: left;
+}
+
+b.title {
+  font-weight: 400;
+  font-size: 23px !important;
+  color: #7c7c7c !important;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 14%;
+}
+
+b.title i {
+  font-size: 16px;
+  color: var(--password-color-button);
+}
+
+.inputEdit {
+  background: none;
+  outline: none;
+  border: 0;
+  width: -webkit-fill-available;
+  width: fill-available;
+  pointer-events: none;
+  height: 26px;
+  overflow-y: hidden;
+  resize: none;
+}
+
+textarea.inputEdit {
+  height: 26px !important;
+  min-height: 26px !important;
+  padding: 0rem 0.75rem;
+}
+
+form span {
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+select.input_true {
+  padding: 0px 14px;
+}
+
+select.inputEdit {
+  padding: 0px 14px;
+}
+
+form b.editStyle {
+  font-weight: 300;
+  font-size: 14px !important;
+}
+
+span.spanEditing {
+  display: flex;
+  flex-direction: column !important;
+}
+
+span.spanEditing .input_wrapper_fl {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.spanEditing .input_wrapper_fl .input_true {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-left: inherit !important;
+  padding: 0px 2px;
+  border: none;
+}
+
+// LISTING TRAINING JOB
+
+span.actions_container_listing.v2 .title {
+  width: 32.5%;
+}
+
+.listing_item_info.v2 {
+  padding: inherit !important;
+  padding-bottom: 10px !important;
+  min-height: 377px !important;
+  overflow-y: auto;
+  resize: vertical;
+  max-height: 535px !important;
+  height: 377px;
+}
+
+span.actions_container_listing.v2 {
+  padding: 19px 19px 0px 19px;
+}
+
+.listing_item_info.v2::-webkit-scrollbar {
+  width: 12px;
+}
+
+.listing_item_info.v2::-webkit-scrollbar-track {
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  background-color: var(--form-control-border);
+}
+
+.listing_item_info.v2::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  background-color: var(--topbar-divider-color);
+}
+
+.listing_item_info.v2 .actions_container_listing.v2 a {
+  text-decoration: none;
+  padding: 7px;
+}
+
+.listing_item_info.v2 .actions_container_listing.v2 a:hover {
+  background-color: #dadadc;
+  color: var(--password-color-button);
+  border-radius: 6px;
+}
+
+span.actions_container_listing.v2 span {
+  margin-bottom: 0px !important;
+}
+
+.listing_item_info.v2 hr {
+  border-bottom: 1px solid;
+  margin: 0px 19px 9px 19px !important;
+}
+
+span#expand {
+  padding: 7px;
+}
+
+span#expand:hover {
+  cursor: pointer;
+  background-color: #dadadc;
+  border-radius: 6px;
+}
+
+// display Files
+.files .file {
+  width: 14%;
+  height: 275px;
+  background: #d7d7d7;
+  margin: 3px 1.5px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-content: center;
+}
+
+.files {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 11px;
+  justify-content: flex-start;
+}
+
+.files .file:hover {
+  cursor: pointer;
+  background: #9c9c9c7a;
+  box-shadow: 0px 1px 1px 1px rgb(0 0 0 / 20%);
+}
+
+.file small {
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  font-size: 16px;
+  padding: 6px;
+  color: #1a1a1a;
+  background: #c8c8c8;
+  border-radius: 0px 0px 7px 7px;
+}
+
+.listing_item_info.v2.v3 {
+  height: 367px;
+}
+
+div.training_job_status {
+  width: 12px !important;
+  height: 12px !important;
+  border-radius: 50%;
+}
+
+div.training_job_status.running {
+  background: green;
+}
+
+div.training_job_status.idle {
+  background: var(--password-color-button);
+}
+
+div.training_job_status.running.animated {
+  animation: blinker 2.5s ease-in-out infinite;
+}
+
+.animated {
+  animation: blinker 2.5s ease-in-out infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+div.training_job_status.finished {
+  background: #787878;
+}
+
+div.training_job_status.aborted {
+  background: #ff1556;
+}
+
+form span b {
+  min-width: 28%;
+}

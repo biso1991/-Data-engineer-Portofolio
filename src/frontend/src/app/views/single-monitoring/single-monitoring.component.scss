@@ -1,0 +1,227 @@
+/* stylelint-disable no-duplicate-selectors */
+/* stylelint-disable selector-pseudo-element-no-unknown */
+/* stylelint-disable property-no-vendor-prefix */
+/* stylelint-disable shorthand-property-no-redundant-values */
+/* stylelint-disable alpha-value-notation */
+/* stylelint-disable color-function-notation */
+/* stylelint-disable rule-empty-line-before */
+/* stylelint-disable selector-pseudo-element-colon-notation */
+/* stylelint-disable font-family-no-missing-generic-family-keyword */
+/* stylelint-disable font-family-name-quotes */
+/* stylelint-disable length-zero-no-unit */
+/* stylelint-disable no-descending-specificity */
+/* stylelint-disable value-no-vendor-prefix */
+/* stylelint-disable declaration-block-no-redundant-longhand-properties */
+/* stylelint-disable selector-class-pattern */
+@use '../../../palette' as *;
+
+[data-title]:hover::before {
+  content: attr(data-title);
+  position: absolute;
+  display: inline-block;
+  padding: 3px 6px;
+  border-radius: 4px;
+  width: 222px;
+  background: white;
+  color: var(--password-color-button);
+  font-size: 12px;
+  font-weight: 500;
+  font-family: Montserrat, sans-serif;
+  left: 9%;
+  top: 18%;
+  z-index: 99999;
+  box-shadow: 3px 4px 15px 1px #00000024;
+}
+
+[data-title2]:hover::before {
+  content: attr(data-title2);
+  position: absolute;
+  display: inline-block;
+  padding: 3px 6px;
+  border-radius: 4px;
+  width: 222px;
+  background: white;
+  color: var(--password-color-button);
+  font-size: 12px;
+  font-weight: 500;
+  font-family: Montserrat, sans-serif;
+  left: 9%;
+  top: 5.5vh;
+  z-index: 99999;
+  box-shadow: 3px 4px 15px 1px #00000024;
+}
+
+.input_wrapper_fl.datalist_container {
+  padding-left: 11px;
+}
+
+.title_view_list {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+  align-items: center;
+  width: 99%;
+  margin: auto;
+}
+
+.container.body_wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+// INFO COMPONENT
+.listing_item_info {
+  display: flex;
+  flex-direction: column;
+  background: #e0e1e980;
+  border-radius: 7px;
+  padding: 19px;
+  position: relative;
+}
+
+.listing_item_info span,
+p {
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.listing_item_info hr {
+  margin: 0px 0px 19px 0px;
+}
+
+.listing_item_info b {
+  color: var(--password-color-button);
+  font-size: 16px;
+}
+
+.info_actions_wrapper {
+  width: fit-content;
+  display: flex;
+}
+
+span.actions_container_listing {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.info_actions_wrapper button {
+  background: #d1d1d1ab;
+  border-radius: 6px;
+  padding: 5px 13px !important;
+  margin-right: 5px;
+  outline: transparent;
+  border: none;
+}
+
+.input_wrapper_fl {
+  width: 83%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-content: center;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+b.title {
+  font-weight: 400;
+  font-size: 23px !important;
+  color: #7c7c7c !important;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 21%;
+}
+
+b.title i {
+  font-size: 16px;
+  color: var(--password-color-button);
+}
+
+div.training_job_status {
+  width: 12px !important;
+  height: 12px !important;
+  border-radius: 50%;
+}
+
+div.training_job_status.running {
+  background: green;
+}
+
+div.training_job_status.idle {
+  background: var(--password-color-button);
+}
+
+div.training_job_status.running.animated {
+  animation: blinker 2.5s ease-in-out infinite;
+}
+
+div.training_job_status.finished {
+  background: #787878;
+}
+
+div.training_job_status.aborted {
+  background: #ff1556;
+}
+
+div.training_job_status.failed {
+  background: #ff1556;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+// MONITORING
+
+.monitoring_cpu_ram {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.single_monitoring {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-content: center;
+  align-items: center;
+}
+
+span.text_monitoring {
+  color: var(--password-color-button);
+  margin: 9% 0px;
+  font-size: 20px;
+  font-weight: 300;
+}
+
+:host ::ng-deep .contain .label div,
+.contain .label div span {
+  font-size: 27px !important;
+  color: #646464;
+  font-family: Nunito, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+:host ::ng-deep .label {
+  border: 1px solid #5a5a5a30;
+  border-radius: 50%;
+}
+
+.listing_item_info b {
+  color: var(--password-color-button);
+  font-size: 16px;
+}
+
+form span b {
+  min-width: 29%;
+}

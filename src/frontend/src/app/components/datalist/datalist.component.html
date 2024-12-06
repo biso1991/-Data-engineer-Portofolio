@@ -1,0 +1,101 @@
+<div
+  class="datalist_wrapper"
+  (clickOutside)="hide()"
+  [style]="editing ? 'width: 100%;' : 'width:fit-content;'"
+>
+  <input
+    #input="ngModel"
+    type="text"
+    name="datalistinput"
+    [id]="!special ? 'datalistinput' : 'special'"
+    class="form-control"
+    placeholder="Type or choose a {{ entityN }}"
+    [class.is-invalid]="
+      !inputValid &&
+      displayErrorsE &&
+      input.touched &&
+      (input.invalid || input.dirty)
+    "
+    (ngModelChange)="inputchanged($event)"
+    (keyup)="filter()"
+    (click)="filter()"
+    [(ngModel)]="Term"
+    (keydown.space)="!Term ? $event.preventDefault() : ''"
+    [class]="editing ? 'input_true' : 'inputEdit hide'"
+    autocomplete="off"
+    required
+  />
+  <a
+    [routerLink]="linkEntity ? [linkEntity + selected.id] : null"
+    id="url_model"
+    *ngIf="!editing && linkEntity"
+    >{{ Term }}</a
+  >
+  <span
+    style="
+      margin-left: 0.5vw !important;
+      width: -webkit-fill-available;
+      margin: 0px;
+    "
+    *ngIf="!editing && !linkEntity"
+    >{{ Term }}</span
+  >
+  <ul
+    (scroll)="onScroll($event)"
+    class="datalist_list"
+    *ngIf="filteredResult.length"
+    [ngStyle]="{ 'width.px': offsetWidth }"
+  >
+    <div *ngIf="newSelected">
+      <li
+        [attr.data-title]="
+          c.scope !== undefined ? (c.scope === 0 ? 'Private' : 'Public') : null
+        "
+        [class]="newSelected.id === c.id ? 'selected' : ''"
+        class="item_datalist_list"
+        *ngFor="let c of filteredResult"
+        (click)="select(c.id)"
+      >
+        <span>{{ c[nameItem] }}</span>
+      </li>
+    </div>
+    <div *ngIf="verifyChosen()">
+      <li
+        [attr.data-title]="
+          c.scope !== undefined ? (c.scope === 0 ? 'Private' : 'Public') : null
+        "
+        [class]="selected.id === c.id ? 'selected' : ''"
+        class="item_datalist_list"
+        *ngFor="let c of filteredResult"
+        (click)="select(c.id)"
+      >
+        <span>{{ c[nameItem] }}</span>
+      </li>
+    </div>
+    <div *ngIf="!verifyChosen() && !newSelected">
+      <li
+        [attr.data-title]="
+          c.scope !== undefined ? (c.scope === 0 ? 'Private' : 'Public') : null
+        "
+        class="item_datalist_list"
+        *ngFor="let c of filteredResult"
+        (click)="select(c.id)"
+      >
+        <span>{{ c[nameItem] }}</span>
+      </li>
+    </div>
+  </ul>
+  <div
+    *ngIf="
+      !inputValid &&
+      displayErrorsE &&
+      input.touched &&
+      (input.invalid || input.dirty)
+    "
+    class="alert alert-danger"
+  >
+    <div *ngIf="!inputValid">
+      <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> {{ error }}
+    </div>
+  </div>
+</div>

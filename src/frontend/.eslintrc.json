@@ -1,0 +1,20 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "jasmine": true
+  },
+  "extends": ["standard"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "no-useless-constructor": "off",
+    "accessor-pairs": ["off", { "getWithoutSet": true, "setWithoutGet": true }],
+    "dot-notation": ["off", { "allowKeywords": false, "allowPattern": "" }],
+    "space-before-function-paren": ["error", "never"]
+  }
+}

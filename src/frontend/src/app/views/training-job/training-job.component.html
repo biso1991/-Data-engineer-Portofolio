@@ -1,0 +1,100 @@
+<div class="title_view_list">
+  <div class="container-md-height m-b-20">
+    <div class="row m-lg-0">
+      <div class="col-xl-7 col-lg-6">
+        <div class="full-height">
+          <div class="card-body text-center">
+            <img
+              class="image-responsive-height demo-mw-500"
+              src="/assets/img/training-job-image.png"
+              alt=""
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-5 col-lg-6">
+        <div class="card card-transparent">
+          <div class="card-header">
+            <div class="card-title">Your Training Job</div>
+          </div>
+          <div class="card-body">
+            <h3>Your Training Job</h3>
+            <p>
+              From this page, you can access Training Job, Clone, Delete, Start
+              and Stop Training Job.
+            </p>
+            <br />
+            <span
+              [routerLink]="['/dashboard/training-job/addtraining-job']"
+              class="add_button blob button"
+              ><i
+                class="fa fa-plus"
+                aria-hidden="true"
+                style="margin-right: 9px"
+              ></i
+              >Create a new Training Job</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr />
+<div class="container">
+  <app-list-items
+    [countP]="count"
+    [entityName]="'Training'"
+    [listItem]="TrainingJobToDisplay"
+    [structurelist]="structure"
+    (search)="setSearchTerm($event)"
+    (ordering)="orderList($event)"
+    (setPageE)="setPage($event)"
+    [ActionListD]="listActions"
+    (delete)="showHideModal($event)"
+    (PageSize)="changePageSize($event)"
+    [FilterItem1]="{
+      list: listProjects,
+      key: 'name',
+      filter_name_model: 'Project',
+      preposition: 'of',
+      type: true,
+      error: false,
+      searchedItems: searchedProject
+    }"
+    [SelectedFilter1]="selectedProject"
+    (displayMoreEv)="displayMore($event)"
+    (searchFilter)="searchProject($event)"
+    (filterSelect)="onChangedatalist($event)"
+    (Filter1)="onChangedatalist($event)"
+    [FilterItem2]="{
+      list: [
+        { id: 0, name: 'Idle' },
+        { id: 1, name: 'Running' },
+        { id: 2, name: 'Finished' },
+        { id: 3, name: 'Failed' },
+        { id: 4, name: 'Aborted' }
+      ],
+      key: 'name',
+      filter_name_model: 'Status'
+    }"
+    (Filter2)="filter2Change($event)"
+    (clone)="CloneTrainingJob($event)"
+    (edit)="editTrainingJob($event)"
+    (start)="startTraining($event)"
+    (stop)="stopTraining($event)"
+  >
+  </app-list-items>
+  <!--
+     (edit)="editFile($event)" -->
+  <app-delete-modal
+    *ngIf="deleteModal"
+    [entityName]="'Training Job'"
+    [EntityToRemove]="TrainingJobRemove"
+    [itemsToRemove]="itemToRemove"
+    (close)="showHideModal()"
+    (delete)="DeleteTrainingJob($event)"
+    [SimpleModal]="true"
+  >
+  </app-delete-modal>
+</div>

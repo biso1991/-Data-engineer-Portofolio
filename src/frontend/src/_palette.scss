@@ -1,0 +1,307 @@
+/* stylelint-disable color-function-notation */
+/* stylelint-disable property-no-unknown */
+/* stylelint-disable scss/dollar-variable-empty-line-before */
+/* stylelint-disable scss/no-global-function-names */
+
+:root {
+  --cpu: 0;
+  $primary-color: #4e73df;
+  $secondary-color: #35b67a;
+  $button-color-bg-primary-hover: darken($primary-color, 10%);
+  $buttons-bg: #a7a7a761;
+  $buttons-bg-hover: darken($buttons-bg, 10%);
+  $link-color: darken($primary-color, 14%);
+  $link-color-hover: darken($link-color, 10%);
+  $button-color-bg-secondary: $secondary-color;
+  $button-color-bg-secondary-hover: darken($secondary-color, 10%);
+  $error-color: #dc3545;
+  $error-color-btn-hover: darken($error-color, 10%);
+  $add-button-color: #008ff8;
+  $add-button-color-hover: darken($add-button-color, 10%);
+
+  --default-color: #fff;
+  --primary-color: #{$primary-color};
+  --secondary-color: #{$secondary-color};
+  --title-color: #3a3b45;
+  --buttons-bg: #{$buttons-bg};
+  --buttons-color: #fff;
+  --password-color-button: black;
+  --error-color: #{$error-color};
+
+  // Form Control
+  --form-control-bg: #fff;
+  --form-control-color: #6e707e;
+  --form-control-border: #d1d3e2;
+
+  // Side Bar
+  --side-bar-collapse-item-hover: #eaecf4;
+  --side-bar-collapse-item-active: #dddfeb;
+  --hr-sidebar-divider: #eaecf4;
+  --sidebar-heading-color: #b7b9cc;
+  --sidebar-text-active: var(--primary-color);
+
+  // Top Bar
+  --topbar-hover-color: #fff;
+  --topbar-divider-color: #a5a5a5;
+  --navbar-light-color: #f8f9fc;
+  --dropdown-menu-color: #858796;
+  --dropdown-menu-background-color: #fff;
+  --dropdown-item-color: #3a3b45;
+  --dropdown-item-hover-color: #eaecf4;
+
+  // Dashboard Background
+  --wrapper-color-bg: #f8f9fc;
+  --btn-info: #36b9cc;
+
+  // Profile
+  --profile-background-color: #e0e1e980;
+  --primary-color-bg: #{$primary-color};
+  --profile-list-color: gray;
+  --item-info-profile-hover: #cfcfcf;
+  --edit-bg-button: #efefef;
+  --item-info-profile-hover2: #efefef;
+
+  // Table
+  --table-td-background: #eeeff4;
+  --table-td-shadow: #e3e3e3;
+
+  // Modal
+  --modal-bg-color: #fff;
+  --modal-text-color: #aaa;
+  --modal-title-color: #686868;
+
+  // Hover
+  --button-color-bg-primary: #{$primary-color};
+  --button-color-bg-primary-hover: #{$button-color-bg-primary-hover};
+  --buttons-bg-hover: #{$buttons-bg-hover};
+  --link-color: #{$link-color};
+  --link-color-hover: #{$link-color-hover};
+  --button-color-bg-secondary: #{$button-color-bg-secondary};
+  --button-color-bg-secondary-hover: #{$button-color-bg-secondary-hover};
+  --error-color-btn-hover: #{$error-color-btn-hover};
+
+  // VIEWS
+  --add-button-color: #{$add-button-color};
+  --add-button-color-hover: #{$add-button-color-hover};
+}
+
+// @media (prefers-color-scheme: dark) {
+//   :root {
+//     $primary-color: #121212;
+//     $secondary-color: #35b67a;
+//     $button-color-bg-primary-hover: darken($primary-color, 10%);
+//     $buttons-bg: #5e5e5e;
+//     $buttons-bg-hover: darken($buttons-bg, 10%);
+//     $link-color: lighten($primary-color, 50%);
+//     $link-color-hover: lighten($link-color, 10%);
+//     $button-color-bg-secondary: $secondary-color;
+//     $button-color-bg-secondary-hover: darken($secondary-color, 10%);
+//     $error-color: #dc3545;
+//     $error-color-btn-hover: darken($error-color, 10%);
+//     $add-button-color: #525252;
+//     $add-button-color-hover: lighten($add-button-color, 10%);
+
+//     --primary-color: #{$primary-color};
+//     --secondary-color: #{$secondary-color};
+//     --title-color: #fff;
+//     --buttons-bg: #{$buttons-bg};
+//     --buttons-color: rgb(228, 228, 228);
+//     --password-color-button: rgb(236, 236, 236);
+//     --error-color: #dc3545;
+
+//     // Form Control
+//     --form-control-bg: #272727;
+//     --form-control-color: #fff;
+//     --form-control-border: #d1d3e2;
+
+//     // Side Bar
+//     --side-bar-collapse-item-hover: #4d4d4d;
+//     --side-bar-collapse-item-active: #fff;
+//     --hr-sidebar-divider: #cacaca;
+//     --sidebar-heading-color: #c5c5c5;
+//     --sidebar-sub-item-color: #c5c5c5;
+//     --sidebar-text-active: #fff;
+
+//     // Top Bar
+//     --topbar-hover-color: rgb(49, 49, 49);
+//     --topbar-divider-color: #dbdbdb;
+//     --navbar-light-color: #00000047;
+//     --dropdown-menu-color: #353535;
+//     --dropdown-menu-background-color: #333;
+//     --dropdown-item-color: #c5c5c5;
+//     --dropdown-item-hover-color: #474747;
+
+//     // Dashboard Background
+//     --wrapper-color-bg: #1d1d1d;
+//     --btn-info: #36b9cc;
+
+//     // Profile
+//     --profile-background-color: #41414163;
+//     --primary-color-bg: var(--primary-color);
+//     --profile-list-color: #c5c5c5;
+//     --item-info-profile-hover: #242424;
+//     --edit-bg-button: #444;
+//     --item-info-profile-hover2: #414141;
+
+//     // Table
+//     --table-td-background: #34343469;
+//     --table-td-shadow: #4e4e4e;
+
+//     // Modal
+//     --modal-bg-color: var(--primary-color);
+//     --modal-text-color: #e4e4e4;
+//     --modal-title-color: #e4e4e4;
+
+//     // Hover
+//     --button-color-bg-primary: #{$primary-color};
+//     --button-color-bg-primary-hover: #{$button-color-bg-primary-hover};
+//     --buttons-bg-hover: #{$buttons-bg-hover};
+//     --link-color: #{$link-color};
+//     --link-color-hover: #{$link-color-hover};
+//     --button-color-bg-secondary: #{$button-color-bg-secondary};
+//     --button-color-bg-secondary-hover: #{$button-color-bg-secondary-hover};
+//     --error-color-btn-hover: #{$error-color-btn-hover};
+
+//     // VIEWS
+//     --add-button-color: #{$add-button-color};
+//     --add-button-color-hover: #{$add-button-color-hover};
+//   }
+// }
+
+// [data-theme='dark'] {
+//   $primary-color: #121212;
+//   $secondary-color: #35b67a;
+//   $button-color-bg-primary-hover: darken($primary-color, 10%);
+//   $buttons-bg: #5e5e5e;
+//   $buttons-bg-hover: darken($buttons-bg, 10%);
+//   $link-color: lighten($primary-color, 50%);
+//   $link-color-hover: lighten($link-color, 10%);
+//   $button-color-bg-secondary: $secondary-color;
+//   $button-color-bg-secondary-hover: darken($secondary-color, 10%);
+//   $error-color: #dc3545;
+//   $error-color-btn-hover: darken($error-color, 10%);
+//   $add-button-color: #525252;
+//   $add-button-color-hover: lighten($add-button-color, 10%);
+
+//   --primary-color: #{$primary-color};
+//   --secondary-color: #{$secondary-color};
+//   --title-color: #fff;
+//   --buttons-bg: #{$buttons-bg};
+//   --buttons-color: rgb(228, 228, 228);
+//   --password-color-button: rgb(236, 236, 236);
+//   --error-color: #dc3545;
+
+//   // Form Control
+//   --form-control-bg: #272727;
+//   --form-control-color: #fff;
+//   --form-control-border: #d1d3e2;
+
+//   // Side Bar
+//   --side-bar-collapse-item-hover: #4d4d4d;
+//   --side-bar-collapse-item-active: #fff;
+//   --hr-sidebar-divider: #cacaca;
+//   --sidebar-heading-color: #c5c5c5;
+//   --sidebar-sub-item-color: #c5c5c5;
+//   --sidebar-text-active: #fff;
+
+//   // Top Bar
+//   --topbar-hover-color: rgb(49, 49, 49);
+//   --topbar-divider-color: #dbdbdb;
+//   --navbar-light-color: #00000047;
+//   --dropdown-menu-color: #353535;
+//   --dropdown-menu-background-color: #333;
+//   --dropdown-item-color: #c5c5c5;
+//   --dropdown-item-hover-color: #474747;
+
+//   // Dashboard Background
+//   --wrapper-color-bg: #1d1d1d;
+//   --btn-info: #36b9cc;
+
+//   // Profile
+//   --profile-background-color: #41414163;
+//   --primary-color-bg: var(--primary-color);
+//   --profile-list-color: #c5c5c5;
+//   --item-info-profile-hover: #242424;
+//   --edit-bg-button: #444;
+//   --item-info-profile-hover2: #414141;
+
+//   // Table
+//   --table-td-background: #34343469;
+//   --table-td-shadow: #4e4e4e;
+
+//   // Modal
+//   --modal-bg-color: var(--primary-color);
+//   --modal-text-color: #e4e4e4;
+//   --modal-title-color: #e4e4e4;
+
+//   // Hover
+//   --button-color-bg-primary: #{$primary-color};
+//   --button-color-bg-primary-hover: #{$button-color-bg-primary-hover};
+//   --buttons-bg-hover: #{$buttons-bg-hover};
+//   --link-color: #{$link-color};
+//   --link-color-hover: #{$link-color-hover};
+//   --button-color-bg-secondary: #{$button-color-bg-secondary};
+//   --button-color-bg-secondary-hover: #{$button-color-bg-secondary-hover};
+//   --error-color-btn-hover: #{$error-color-btn-hover};
+
+//   // VIEWS
+//   --add-button-color: #{$add-button-color};
+//   --add-button-color-hover: #{$add-button-color-hover};
+// }
+
+.ngx-bar {
+  background-color: var(--primary-color) !important;
+}
+
+.white .ngx-bar {
+  background: var(--default-color) !important;
+}
+
+.text-gray-900 {
+  color: var(--title-color) !important;
+}
+
+a {
+  color: var(--link-color);
+
+  &:hover {
+    color: var(--link-color-hover);
+  }
+}
+
+.bg-white {
+  background-color: var(--form-control-bg) !important;
+}
+
+small {
+  display: block;
+  line-height: 1.4286;
+  color: #999;
+}
+
+.btn-danger {
+  color: #fff;
+  background-color: var(--error-color);
+  border-color: var(--error-color);
+}
+
+.btn-danger:hover {
+  background-color: var(--error-color-btn-hover);
+  border-color: var(--error-color-btn-hover);
+}
+
+.btn-info {
+  color: #fff;
+  background-color: var(--btn-info);
+  border-color: var(--btn-info);
+}
+
+.btn-info:hover {
+  background-color: hsl(var(--btn-info), 10%);
+  border-color: hsl(var(--btn-info), 10%);
+}
+
+.bg-gradient-primary {
+  background-size: cover;
+  background-color: var(--primary-color) !important;
+}

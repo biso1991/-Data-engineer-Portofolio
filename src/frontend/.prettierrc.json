@@ -1,0 +1,7 @@
+{
+  "singleQuote": true,
+  "trailingComma": "none",
+  "endOfLine": "auto",
+  "semi": false,
+  "prettier.stylelintIntegration": true
+}

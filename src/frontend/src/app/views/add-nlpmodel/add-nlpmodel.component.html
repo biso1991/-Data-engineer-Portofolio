@@ -1,0 +1,312 @@
+<div class="title_view_list">
+  <div class="container-md-height m-b-20">
+    <div class="row m-lg-0">
+      <div class="col-xl-7 col-lg-6">
+        <div class="full-height">
+          <div class="card-body text-center">
+            <img
+              class="image-responsive-height demo-mw-500"
+              src="/assets/img/model_image.png"
+              alt=""
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-5 col-lg-6">
+        <div class="card card-transparent">
+          <div class="card-header">
+            <div class="card-title">Add Model</div>
+          </div>
+          <div class="card-body">
+            <h3>Create New Model</h3>
+            <p>From this page, you can create Model</p>
+            <b>Accepted Models : RAR / ZIP</b>
+            <b>Accepted Models Url : Huggingface.co</b>
+            <b>* Indicates a required field.</b>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr class="component_divider" />
+<div class="container body_wrapper">
+  <div class="add_wrapper">
+    <div class="info_actions_wrapper">
+      <div>
+        <button (click)="AddModel()" [disabled]="!formisvalid || isUploading">
+          <i class="fa fa-check" aria-hidden="true"></i>
+          Save
+        </button>
+        <button (click)="Cancel()">
+          <i aria-hidden="true" class="fa fa-times"></i> Cancel
+        </button>
+      </div>
+    </div>
+
+    <form #f="ngForm">
+      <span
+        ><b>Model Name *: </b>
+        <div class="input_wrapper_fl">
+          <input
+            (keydown.space)="!Model.model_name ? $event.preventDefault() : ''"
+            name="model_name"
+            type="text"
+            class="form-control"
+            minlength="3"
+            maxlength="150"
+            placeholder="Enter model name"
+            autocomplete="off"
+            #name="ngModel"
+            class="form-control input_true"
+            [(ngModel)]="Model.model_name"
+            (ngModelChange)="verify(f)"
+            [class.is-invalid]="name.invalid && name.touched"
+            required
+          />
+          <div class="alert alert-danger error_Model">
+            <span *ngIf="name.errors ? name.errors['minlength'] : null"
+              ><i class="Ubiai-icon icon-icons8-info">&#xe800;</i> At least 3
+              characters !</span
+            >
+            <span *ngIf="name.errors ? name.errors['required'] : null"
+              ><i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Model name is
+              required !</span
+            >
+          </div>
+        </div>
+      </span>
+      <span>
+        <div class="input_wrapper_fl">
+          <b>Model *: </b>
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li (click)="setTab(1)" class="nav-item" role="presentation">
+              <a
+                [class]="active === 1 ? 'active' : null"
+                class="nav-link"
+                data-toggle="tab"
+                role="tab"
+                aria-controls="Address"
+                aria-selected="active === 1 ? true: false"
+                >From URL</a
+              >
+            </li>
+            <li (click)="setTab(2)" class="nav-item" role="presentation">
+              <a
+                [class]="active === 2 ? 'active' : null"
+                class="nav-link"
+                data-toggle="tab"
+                role="tab"
+                aria-controls="Upload"
+                aria-selected="active === 2 ? true: false"
+                >Upload</a
+              >
+            </li>
+          </ul>
+
+          <!-- Tab panes -->
+          <div class="tab-content">
+            <div
+              [class]="active === 1 ? 'active' : null"
+              class="tab-pane"
+              role="tabpanel"
+              aria-labelledby="1"
+            >
+              <div class="input_URL">
+                <div
+                  *ngIf="active === 1 && modelIsDownloading"
+                  class="loaderFromHuggingFace"
+                >
+                  <div
+                    [style]="urlMSG === 'Success' ? 'display:none' : null"
+                    class="lds-roller"
+                  >
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                  </div>
+                  <b
+                    [style]="
+                      urlMSG === 'Success'
+                        ? 'color:green;font-size: 24px !important;'
+                        : null
+                    "
+                    >{{ urlMSG }}</b
+                  >
+                </div>
+                <input
+                  [style]="modelIsDownloading ? 'display:none;' : null"
+                  (keydown.space)="!modelUrl ? $event.preventDefault() : ''"
+                  *ngIf="active === 1"
+                  name="modelUrl"
+                  #input
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter Model Name From Hugging face"
+                  autocomplete="off"
+                  class="form-control input_true"
+                  [(ngModel)]="modelUrl"
+                  (ngModelChange)="inputchanged(f, $event)"
+                  [class.is-invalid]="
+                    inputTouched && (!modelUrl || !modelUrlIsValid)
+                  "
+                  required
+                />
+                <a
+                  href="https://huggingface.co/models?pipeline_tag=question-answering&sort=downloads&order=desc"
+                  target="_blank"
+                >
+                  <b>Choose Model From Hugging Face</b>
+                </a>
+                <div
+                  *ngIf="inputTouched && (!modelUrl || !modelUrlIsValid)"
+                  class="alert alert-danger"
+                  style="border: none !important; background: none"
+                >
+                  <div *ngIf="!modelUrl">
+                    <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Model is
+                    required
+                  </div>
+                  <div *ngIf="modelUrl && !modelUrlIsValid">
+                    <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Model
+                    Name Is Invalid
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              [class]="active === 2 ? 'active' : null"
+              class="tab-pane"
+              role="tabpanel"
+              aria-labelledby="0"
+            >
+              <div
+                class="drag&drop"
+                appDragDrop
+                [style]="
+                  filesTouched && errorFiles ? 'border-color: red;' : null
+                "
+                (files)="fileSelectionChanged($event, f, true)"
+              >
+                <div *ngIf="active === 2" class="row fileGrid">
+                  <div
+                    (click)="click($any($event.target), file, f)"
+                    class="col-md-12 text-center"
+                    [style]="
+                      !selFiles.length
+                        ? 'display: flex; flex-direction: column; justify-content: center; align-items: center;'
+                        : ''
+                    "
+                  >
+                    <div
+                      *ngIf="!selFiles.length"
+                      style="
+                        background-image: url('/assets/img/drag-drop_1.png');
+                        background-repeat: no-repeat;
+                        background-size: contain;
+                        height: 20vh;
+                        margin: auto;
+                        width: 16vw;
+                      "
+                    ></div>
+                    <div id="lineofInstruction_DRAGDROP">
+                      Drag Model here
+                      <b id="special"> or click to open </b>
+                      <i
+                        id="clearFiles"
+                        (click)="click($any($event.target), null, f)"
+                        *ngIf="selFiles.length"
+                        class="fas fa-window-close"
+                        style="float: right"
+                      ></i>
+                    </div>
+                    <input
+                      accept="application/vnd.rar,application/zip"
+                      type="file"
+                      #file
+                      [multiple]="false"
+                      name="file"
+                      id="file"
+                      (change)="fileSelectionChanged($event, f)"
+                      style="display: none"
+                      required
+                    />
+                    <div
+                      *ngIf="filesTouched && !selFiles.length"
+                      class="alert alert-danger"
+                    >
+                      <div>
+                        <i class="Ubiai-icon icon-icons8-info">&#xe800;</i>
+                        Model is required
+                      </div>
+                    </div>
+                    <div class="dragged-files-wrapper" *ngIf="selFiles.length">
+                      <div
+                        class="files"
+                        [style]="selFiles.length === 0 ? 'height:100%' : ''"
+                      >
+                        <div
+                          [title]="file.name"
+                          *ngFor="let file of selFiles"
+                          class="file"
+                          [style]="
+                            file.error ? 'border: 1px solid #fe2929;' : null
+                          "
+                        >
+                          <div>
+                            <i
+                              (click)="DeleteFile(file.name, f)"
+                              id="clearOneFile"
+                              class="fas fa-window-close"
+                              style="width: fit-content; float: right"
+                            ></i>
+                          </div>
+                          <div
+                            [style.opacity]="file.error ? 0.5 : null"
+                            id="SingleFIle"
+                            [style]="
+                              'background-image: url(' +
+                              '/assets/img/file.png' +
+                              '); background-repeat: no-repeat;background-size: contain;height: 50%;margin: auto;width: 41%;background-position-y: center;'
+                            "
+                          ></div>
+                          <b style="color: red">{{
+                            file.error ? file.error : '&nbsp;'
+                          }}</b>
+                          <small id="SingleFIleName">{{ file.name }}</small>
+                          <div
+                            *ngIf="uploadInfo[file.name]"
+                            class="progress form-group"
+                          >
+                            <div
+                              class="progress-bar progress-bar-striped bg-success"
+                              role="progressbar"
+                              [style.width.%]="uploadInfo[file.name].progress"
+                              [style]="
+                                uploadInfo[file.name].status == 0
+                                  ? 'background-color: #a1a1a1 !important;'
+                                  : uploadInfo[file.name].status == 1
+                                  ? 'background-color: #008c00 !important;'
+                                  : 'background-color: red !important;'
+                              "
+                            ></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </span>
+    </form>
+  </div>
+</div>

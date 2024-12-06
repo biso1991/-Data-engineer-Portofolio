@@ -1,0 +1,176 @@
+/* stylelint-disable keyframe-declaration-no-important */
+/* stylelint-disable keyframes-name-pattern */
+/* stylelint-disable alpha-value-notation */
+/* stylelint-disable color-function-notation */
+/* stylelint-disable selector-class-pattern */
+/* stylelint-disable shorthand-property-no-redundant-values */
+/* stylelint-disable value-no-vendor-prefix */
+/* stylelint-disable length-zero-no-unit */
+/* stylelint-disable font-family-name-quotes */
+/* stylelint-disable font-family-no-missing-generic-family-keyword */
+@use './palette' as *;
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
+
+/* Importing Datepicker SCSS file. */
+@import 'node_modules/ngx-bootstrap/datepicker/bs-datepicker';
+
+html {
+  width: 100%;
+  height: 100%;
+  display: table;
+}
+
+body {
+  margin: 0;
+  font-family: Nunito, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #858796;
+  text-align: left;
+  height: 100vh;
+  width: 100%;
+  display: table-cell;
+}
+
+.ngx-spinner {
+  transition: 0.35s linear all;
+  display: block;
+  position: absolute;
+  top: 7px;
+  right: 7px !important;
+  left: inherit !important;
+}
+
+ol.breadcrumb li.breadcrumb-item:nth-of-type(n + 2)::before {
+  content: '\f105' !important;
+  font-family: 'fontAwesome';
+  font-weight: 900;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+nav[aria-label='breadcrumb'] {
+  background-color: #eeeff400 !important;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 9px;
+  margin: 1px 11px;
+  border-radius: 6px;
+}
+
+.breadcrumb-item span,
+a {
+  font-size: 14px;
+}
+
+nav[aria-label='breadcrumb'] ol {
+  margin-bottom: 0px !important;
+}
+
+h2 {
+  margin: 4px 11px;
+  font-size: 24px;
+  color: black;
+}
+
+@font-face {
+  font-family: 'fontello';
+  src: url('/assets/font/fontello.eot?61555983');
+  src: url('/assets/font/fontello.eot?61555983#iefix')
+      format('embedded-opentype'),
+    url('/assets/font/fontello.woff?61555983') format('woff'),
+    url('/assets/font/fontello.ttf?61555983') format('truetype'),
+    url('/assets/font/fontello.svg?61555983#fontello') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.Ubiai-icon {
+  font-family: 'fontello';
+  font-style: normal;
+  font-weight: normal;
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  text-align: center;
+  font-feature-settings: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1em;
+  font-size: 14px;
+}
+
+.alert.alert-danger {
+  background-color: inherit;
+  border: inherit;
+  color: red;
+  font-size: 13px;
+  padding: inherit;
+  margin: inherit;
+}
+
+.blob.white {
+  box-shadow: 0 0 0 0 rgb(53 95 216);
+  animation: pulse-white 2s infinite;
+  animation-iteration-count: 4;
+}
+
+.blob.button {
+  box-shadow: 0 0 0 0 rgb(53 95 216);
+  animation: pulse-white 2s infinite;
+}
+
+@keyframes pulse-white {
+  0% {
+    box-shadow: 0 0 0 0 rgba(53, 95, 216, 0.7);
+  }
+
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
+}
+
+.fade-out {
+  animation: fadeOut 1s;
+  opacity: 0;
+  /* stylelint-disable-next-line scss/double-slash-comment-empty-line-before */
+  // display: none;
+}
+
+.fade-in {
+  animation: fadeIn 1.5s;
+  opacity: 1;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    display: block;
+  }
+
+  to {
+    opacity: 0;
+    display: none;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    display: none;
+  }
+
+  to {
+    opacity: 1;
+    display: block !important;
+  }
+}

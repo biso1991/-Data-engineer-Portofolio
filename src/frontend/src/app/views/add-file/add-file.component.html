@@ -1,0 +1,198 @@
+<div class="title_view_list">
+  <div class="container-md-height m-b-20">
+    <div class="row m-lg-0">
+      <div class="col-xl-7 col-lg-6">
+        <div class="full-height">
+          <div class="card-body text-center">
+            <img
+              class="image-responsive-height demo-mw-500"
+              src="/assets/img/file-image.png"
+              alt=""
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-5 col-lg-6">
+        <div class="card card-transparent">
+          <div class="card-header">
+            <div class="card-title">
+              Add File
+              {{ selectedProject ? 'For ' + selectedProject.name : '' }}
+            </div>
+          </div>
+          <div class="card-body">
+            <h3>
+              Create New File(s)
+              {{ selectedProject ? 'For ' + selectedProject.name : '' }}
+            </h3>
+            <p>From this page, you can create file(s)</p>
+            <b>Accepted Files : PDF - DOCX - TXT</b>
+            <b>Max File Size : 5MB</b>
+            <b>* Indicates a required field.</b>
+            <!-- <b>Content Of Files : English</b> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr class="component_divider" />
+<div class="container body_wrapper">
+  <div class="add_wrapper" [class]="selectedProject ? 'blob white' : ''">
+    <div class="info_actions_wrapper">
+      <div>
+        <button (click)="AddFiles()" [disabled]="!formisvalid || isUploading">
+          <i class="fa fa-check" aria-hidden="true"></i>
+          Save
+        </button>
+        <button (click)="Cancel()">
+          <i aria-hidden="true" class="fa fa-times"></i> Cancel
+        </button>
+      </div>
+    </div>
+    <form #f="ngForm">
+      <span
+        ><b>Project *: </b>
+        <div class="input_wrapper_fl">
+          <app-datalist
+            [optionsList]="{ list: projects, search: searchedProject }"
+            [Isediting]="isEditing"
+            [selectedItem]="selectedProject"
+            [name]="'name'"
+            [entity]="'Project'"
+            (scrollBottom)="displayMore($event)"
+            (search)="searchProject($event)"
+            (Select)="onChangedatalist($event, f)"
+            (errorE)="verify(f, $event)"
+          >
+          </app-datalist>
+        </div>
+      </span>
+
+      <span>
+        <b
+          >Files *: <b *ngIf="selFiles.length">({{ selFiles.length }})</b></b
+        >
+        <div class="input_wrapper_fl">
+          <!-- <input type="file" id="files" name="files" (change)="fileSelectionChanged($event,f)" required
+                        multiple> -->
+
+          <!-- file.click() -->
+          <div
+            class="drag&drop"
+            appDragDrop
+            [style]="filesTouched && errorFiles ? 'border-color: red;' : null"
+            (files)="fileSelectionChanged($event, f, true)"
+          >
+            <div class="row fileGrid">
+              <div
+                (click)="click($any($event.target), file, f)"
+                class="col-md-12 text-center"
+                [style]="
+                  !selFiles.length
+                    ? 'display: flex; flex-direction: column; justify-content: center; align-items: center;'
+                    : ''
+                "
+              >
+                <div
+                  *ngIf="!selFiles.length"
+                  style="
+                    background-image: url('/assets/img/drag-drop_1.png');
+                    background-repeat: no-repeat;
+                    background-size: contain;
+                    height: 20vh;
+                    margin: auto;
+                    width: 16vw;
+                  "
+                ></div>
+                <div id="lineofInstruction_DRAGDROP">
+                  Drag files here
+                  <b id="special"> or click to open </b>
+                  <i
+                    id="clearFiles"
+                    (click)="click($any($event.target), null, f)"
+                    *ngIf="selFiles.length"
+                    class="fas fa-window-close"
+                    style="float: right"
+                  ></i>
+                </div>
+                <input
+                  accept="application/pdf,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                  type="file"
+                  #file
+                  [multiple]="true"
+                  name="file"
+                  id="file"
+                  (change)="fileSelectionChanged($event, f)"
+                  style="display: none"
+                  required
+                />
+                <div
+                  *ngIf="filesTouched && !selFiles.length"
+                  class="alert alert-danger"
+                >
+                  <div>
+                    <i class="Ubiai-icon icon-icons8-info">&#xe800;</i> Files
+                    are required
+                  </div>
+                </div>
+                <div class="dragged-files-wrapper" *ngIf="selFiles.length">
+                  <div
+                    class="files"
+                    [style]="selFiles.length === 0 ? 'height:100%' : ''"
+                  >
+                    <div
+                      [title]="file.name"
+                      *ngFor="let file of selFiles"
+                      class="file"
+                      [style]="file.error ? 'border: 1px solid #fe2929;' : null"
+                    >
+                      <div>
+                        <i
+                          (click)="DeleteFile(file.name, f)"
+                          id="clearOneFile"
+                          class="fas fa-window-close"
+                          style="width: fit-content; float: right"
+                        ></i>
+                      </div>
+                      <div
+                        [style.opacity]="file.error ? 0.5 : null"
+                        id="SingleFIle"
+                        [style]="
+                          'background-image: url(' +
+                          getBackgroundImage(file.name) +
+                          '); background-repeat: no-repeat;background-size: contain;height: 50%;margin: auto;width: 41%;background-position-y: center;'
+                        "
+                      ></div>
+                      <b style="color: red">{{
+                        file.error ? file.error : '&nbsp;'
+                      }}</b>
+                      <small id="SingleFIleName">{{ file.name }}</small>
+                      <div
+                        *ngIf="uploadInfo[file.name]"
+                        class="progress form-group"
+                      >
+                        <div
+                          class="progress-bar progress-bar-striped bg-success"
+                          role="progressbar"
+                          [style.width.%]="uploadInfo[file.name].progress"
+                          [style]="
+                            uploadInfo[file.name].status == 0
+                              ? 'background-color: #a1a1a1 !important;'
+                              : uploadInfo[file.name].status == 1
+                              ? 'background-color: #008c00 !important;'
+                              : 'background-color: red !important;'
+                          "
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </span>
+    </form>
+  </div>
+</div>
