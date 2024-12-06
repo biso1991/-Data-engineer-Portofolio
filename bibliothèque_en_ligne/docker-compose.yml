@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:11.6
+    environment:
+      POSTGRES_USER: dbuser
+      POSTGRES_PASSWORD: dbpassword
+      POSTGRES_DB: qadb
+  
+  web:
+    container_name:  web 
+    restart: always
+
+    environment:
+      - DJANGO_SECRET_KEY=django-insecure-cz!*hcw63ifwit^-ec8gj5j+dr-oek=94nq65!$!mk3fv%n2sz
+    build: .
+    command: >
+      bash -c "./manage.py migrate"     
+              
+    volumes:
+      - ./:/code
+    ports:
+      - '8000:8000'
+
+# celery -A api worker --loglevel=info -E -P threads &
+    # deploy:
+    #   resources:
+    #     limits:
+    #       # cpus: '0.50'
+    #       memory: 3000M
+                    # python wait_for_postgres.py &&
+                      # ./manage.py makemigrations &&
+              #  ./manage.py migrate &&
+  
+    depends_on:
+      - postgres
+    #   - redis
+    #   - elasticsearch
